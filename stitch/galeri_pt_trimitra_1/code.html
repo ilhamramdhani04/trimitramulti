@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Galeri Karya | PT TRIMITRA MULTI KREASI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#ffb5a1",
+                    "primary-fixed-dim": "#c9c6c5",
+                    "surface-tint": "#5f5e5e",
+                    "surface-container-highest": "#e5e2dc",
+                    "surface": "#fcf9f3",
+                    "inverse-surface": "#31312d",
+                    "surface-container": "#f0eee8",
+                    "secondary": "#735b28",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#872103",
+                    "on-surface-variant": "#444748",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#261900",
+                    "on-secondary-fixed-variant": "#594312",
+                    "tertiary": "#000000",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed": "#3c0800",
+                    "on-tertiary-container": "#da5d3b",
+                    "background": "#fcf9f3",
+                    "primary-fixed": "#e5e2e1",
+                    "on-error-container": "#93000a",
+                    "outline": "#747878",
+                    "secondary-fixed-dim": "#e3c285",
+                    "tertiary-container": "#3c0800",
+                    "surface-container-high": "#ebe8e2",
+                    "secondary-container": "#fedb9c",
+                    "on-primary-fixed-variant": "#474646",
+                    "tertiary-fixed": "#ffdbd1",
+                    "on-primary-fixed": "#1c1b1b",
+                    "primary": "#000000",
+                    "surface-variant": "#e5e2dc",
+                    "primary-container": "#1c1b1b",
+                    "on-surface": "#1c1c18",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#c4c7c7",
+                    "on-background": "#1c1c18",
+                    "surface-dim": "#dcdad4",
+                    "surface-container-low": "#f6f3ed",
+                    "inverse-on-surface": "#f3f0ea",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#fcf9f3",
+                    "on-primary-container": "#858383",
+                    "inverse-primary": "#c9c6c5",
+                    "on-secondary-container": "#785f2b",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#ffdea3",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Syne", "sans-serif"],
+                    "body": ["DM Sans", "sans-serif"],
+                    "label": ["DM Sans", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .diagonal-pattern {
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px);
+        }
+        body { font-family: 'DM Sans', sans-serif; background-color: #fcf9f3; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-secondary selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-black/80 backdrop-blur-xl">
+<div class="flex justify-between items-center px-8 py-6 w-full max-w-[1920px] mx-auto">
+<a class="text-2xl font-black tracking-tighter text-black dark:text-white uppercase" href="#">TRIMITRA</a>
+<div class="hidden md:flex items-center space-x-10">
+<a class="text-primary/60 dark:text-white/60 hover:text-secondary transition-colors duration-300 text-xs font-bold tracking-[0.1em] uppercase" href="#">Portofolio</a>
+<a class="text-primary/60 dark:text-white/60 hover:text-secondary transition-colors duration-300 text-xs font-bold tracking-[0.1em] uppercase" href="#">Layanan</a>
+<a class="text-primary/60 dark:text-white/60 hover:text-secondary transition-colors duration-300 text-xs font-bold tracking-[0.1em] uppercase" href="#">Proses</a>
+<a class="text-primary/60 dark:text-white/60 hover:text-secondary transition-colors duration-300 text-xs font-bold tracking-[0.1em] uppercase" href="#">Tentang</a>
+<a class="text-primary/60 dark:text-white/60 hover:text-secondary transition-colors duration-300 text-xs font-bold tracking-[0.1em] uppercase" href="#">Kontak</a>
+</div>
+<button class="bg-primary text-white px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-secondary transition-all duration-300 active:scale-95">
+                Minta Penawaran
+            </button>
+</div>
+</nav>
+<main class="pt-[92px]">
+<!-- Sub-hero Section -->
+<section class="bg-primary text-white relative overflow-hidden py-24 md:py-32">
+<div class="absolute inset-0 diagonal-pattern opacity-40"></div>
+<div class="relative z-10 px-8 max-w-[1920px] mx-auto">
+<nav class="mb-8 flex items-center space-x-3 text-xs font-medium tracking-[0.2em] uppercase text-white/50">
+<a class="hover:text-secondary transition-colors" href="#">Beranda</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-white">Galeri</span>
+</nav>
+<h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight max-w-4xl">
+                    Galeri Karya Kami
+                </h1>
+</div>
+</section>
+<!-- Sticky Filter Bar -->
+<section class="sticky top-[92px] z-40 bg-surface-container-low py-4 px-8 border-b border-outline-variant/10">
+<div class="max-w-[1920px] mx-auto flex flex-wrap gap-4 items-center">
+<button class="px-8 py-3 bg-secondary text-white text-xs font-bold tracking-[0.1em] uppercase">Semua</button>
+<button class="px-8 py-3 bg-transparent text-primary/60 hover:text-primary text-xs font-bold tracking-[0.1em] uppercase transition-colors">Booth Pameran</button>
+<button class="px-8 py-3 bg-transparent text-primary/60 hover:text-primary text-xs font-bold tracking-[0.1em] uppercase transition-colors">Event</button>
+<button class="px-8 py-3 bg-transparent text-primary/60 hover:text-primary text-xs font-bold tracking-[0.1em] uppercase transition-colors">Cong Ad</button>
+</div>
+</section>
+<!-- Masonry Grid -->
+<section class="px-8 py-16 max-w-[1920px] mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Row 1 -->
+<div class="group relative aspect-square overflow-hidden bg-surface-container-highest cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="minimalist modern exhibition booth with sleek black structures and warm amber lighting in a high-end convention hall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcsNzfbRHU8aBKqXUXSxpRYbZmWWOA3JNUrqCTghgJ5K31Hor9s0nqmh06I6khNBo4ismOSaol5vbMh7HRLjnHXTDe5fzOXsUxBrmVPbIAn21em_HBegGFEsGtLQPfug9RuyF_Qql2zDzWrC8Noqp8_TXZ6O-TDr9XUyx14fpfxHaozGdwaMBSv_Hpq_cENGKX676T6RHEX1pwy-oEw2Tsl0u6Xh-N-xorId0uWbUF2_ThF3k0LxvXMYRic8zdVRwx8kF0Cz5iYnLs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-secondary text-[10px] font-bold tracking-[0.2em] uppercase mb-2">Booth Pameran</span>
+<h3 class="text-white text-xl md:text-2xl font-bold leading-tight">Lumina Tech Pavilion</h3>
+</div>
+</div>
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-highest cursor-pointer md:row-span-2">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="architectural close up of a premium corporate event entrance with vertical wooden slats and golden backlight branding" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCadd13y-b5as9b4luoNf3zbSU4GK3SJ7Nwd0EgH7Ol17gUaMuQua6rfCAY0dODlon6Vc7L4idRDuRp1Ru5muAj5tsT-DTbD48WIWydKz-OtxwVAH85siukGHzBAY-wLNrBYwvAoRVZyoyqs0GLqwKGshF6Rpq9PaXClmCZDis5TPnOj5250fGZFlSq0ydOh_EW4MJeC77yLX-UaYL16wl36quO3wYK7nddObZtwDNoH8zWOELnC4FqdEwzg29b5g98_Slnca5rt6NH"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-secondary text-[10px] font-bold tracking-[0.2em] uppercase mb-2">Event Organizing</span>
+<h3 class="text-white text-xl md:text-2xl font-bold leading-tight">Summit of Excellence 2024</h3>
+</div>
+</div>
+<div class="group relative aspect-[4/3] overflow-hidden bg-surface-container-highest cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="high-end retail interior design with floating marble shelves and focused spotlighting in a luxury boutique" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP3LlVLjJs2bUFxnCCmoUMGTnfPjZxeLVqULuV1D9tpISF5vJAzA4mkx8jlfEHNwOME7hq_lC6FDemFFoHrRLH-XsqFUGqjvnF2CiTLmU6s9IHZu_3Ey_Vz76wkPs89ZRBUG-eiDzulqLHMzhsh9DoLAF2ViMl_v8GvYF1y8jWH0sy2f3sdpSu31VwA70Rn47Yvs4KFRD_8sFokBVL1Um94cUqiw0ZF4xmH6rbIAlfRqM-tQ5w83PIAtX4GnrAkf7Nl8SDhfmZdqSa"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-secondary text-[10px] font-bold tracking-[0.2em] uppercase mb-2">Desain Interior</span>
+<h3 class="text-white text-xl md:text-2xl font-bold leading-tight">Avenue Luxury Suite</h3>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="group relative aspect-[4/3] overflow-hidden bg-surface-container-highest cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="vibrant outdoor event setup at dusk with geometric stages and artistic lighting installations against a city skyline" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAno6gaz2FlaP8ZVuv5oPCM83dS6rY5J1iiC2vxgzBq2KIANy2GjFtMUy915hxKl9WEnqfB-CmWzeUDXeIeBRoZbm2VETHKDnzjZzvEZpPs8JqnXZ1JVl6CfXoMVa1T4rkad4hEdgbigTVq1qUyeoO72MR29Vhpv2RNAUak7Oq1ZMtoYvDJRYuzHdNq0yNBm2Mtyg2PrI1UPPjO1ABMR_0gsL1-HH_RRPQJLpFe75ZzJeIHLCFGa_pe0TPe25QCCRxdGqws53sgs5zn"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-secondary text-[10px] font-bold tracking-[0.2em] uppercase mb-2">Event</span>
+<h3 class="text-white text-xl md:text-2xl font-bold leading-tight">Urban Beats Festival</h3>
+</div>
+</div>
+<div class="group relative aspect-square overflow-hidden bg-surface-container-highest cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="futuristic trade show booth with curved white surfaces and integrated digital display screens" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL2Z3FW36pWxQX9RrDCuQP4-H_v__ur-O9LHtk1DcGVo_Ya3_SHSJZ0RC2S_hA4pKTIx8FG_hCCjSSLTHco9coqLiK8b-w3P-dHjjfUdWNE2P6JCdOCFnlaqI8DxTbIgcnbiLeuozXa74puwVZgT08lFOR85kkksE9xmDehVnKzBguTR7QP29C0TyxqkAi8qRvmcor22_URn_NJN_Sm8jsTA0oPKuD7pem9ae-r1RygEl-wGwqtdnygRI-RvDTWj4NsORVElteWkn1"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-secondary text-[10px] font-bold tracking-[0.2em] uppercase mb-2">Booth Pameran</span>
+<h3 class="text-white text-xl md:text-2xl font-bold leading-tight">NexGen Mobility Hub</h3>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-highest cursor-pointer md:col-span-1">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="premium advertising billboard installation in a high-traffic metro station with sharp typography and high-contrast visuals" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1LrvBf36pq2uZabXLSfC6YiMrAQ3zBGfQUV4jYu0Mddgb22P0zt69Ox7U9ZOWy7IWwjp5K1L5zmiM63ZTUFVXQH0rIWohHQaJXLTMmD4mKMUa1zoyBXkKDBTOIm5_D4umRYq3WXXnYTHV0ggO0VKLPEPicAEkGYzOuNq2fQheRbUuBdQqFaDYpPbgtwfykXEmOSNs4q6OPLVqiAXzGE7X9Oha0IjOtcOBK_7xU7D2Kmbj9oZCZc5kGa8S-P7TB6t2NjLnhmxnBCZT"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-secondary text-[10px] font-bold tracking-[0.2em] uppercase mb-2">Cong Ad</span>
+<h3 class="text-white text-xl md:text-2xl font-bold leading-tight">Visual Impact Series</h3>
+</div>
+</div>
+<div class="group relative aspect-video overflow-hidden bg-surface-container-highest cursor-pointer md:col-span-2">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="wide angle shot of an expansive exhibition hall with multiple custom booths designed with architectural precision" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBey7iiP-nQauXb9BvvLSzXHFNee_PULHxNFBxt2Z5WNzWTEAwnMdjr2p14coKckSyUoEYVTxddDaxkjrveCqGJiCz-9prZaBLDgyGFjvaJULSIZyYMIHUhK9T06CkZjbjNiO-kSOVRebuUSEOMidkKfjvSra2Zf6rUN1zeDeclNdOzF1HmMwXnygzpp6rnrmyim9BjROLV7fYprkbBjLFmqRkhNR3_CbHHcIaq9sg-dZUglNl9fEVXnaE_C34Nor17UK_OJsDBw2bf"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-secondary text-[10px] font-bold tracking-[0.2em] uppercase mb-2">Booth Pameran</span>
+<h3 class="text-white text-xl md:text-2xl font-bold leading-tight">Master Hall Showcase</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="bg-surface-container-low py-32 px-8 text-center">
+<div class="max-w-4xl mx-auto">
+<span class="text-secondary text-xs font-bold tracking-[0.3em] uppercase block mb-6">Mulai Proyek Anda</span>
+<h2 class="text-4xl md:text-6xl font-extrabold tracking-tighter mb-12">Wujudkan Visi Arsitektural Anda Bersama Kami.</h2>
+<button class="bg-primary text-white px-12 py-6 text-sm font-bold tracking-[0.2em] uppercase hover:bg-secondary transition-all">
+                    Konsultasi Gratis
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-neutral-900 border-t border-outline-variant/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-12 py-20 w-full max-w-[1920px] mx-auto">
+<div class="space-y-6">
+<div class="text-xl font-bold tracking-tighter text-black dark:text-white uppercase">TRIMITRA</div>
+<p class="text-primary/70 dark:text-white/70 text-sm leading-relaxed max-w-xs font-body">
+                    Penyedia solusi terpadu untuk kebutuhan kontraktor pameran, interior, dan event organizing dengan presisi arsitektural.
+                </p>
+</div>
+<div class="flex flex-col space-y-4">
+<h4 class="text-sm font-black tracking-widest uppercase mb-2 text-primary dark:text-white font-headline">Layanan</h4>
+<a class="text-primary/70 dark:text-white/70 hover:text-secondary underline-offset-4 hover:underline text-sm transition-opacity" href="#">Booth Pameran</a>
+<a class="text-primary/70 dark:text-white/70 hover:text-secondary underline-offset-4 hover:underline text-sm transition-opacity" href="#">Desain Interior</a>
+<a class="text-primary/70 dark:text-white/70 hover:text-secondary underline-offset-4 hover:underline text-sm transition-opacity" href="#">Event Organizing</a>
+</div>
+<div class="flex flex-col space-y-4">
+<h4 class="text-sm font-black tracking-widest uppercase mb-2 text-primary dark:text-white font-headline">Informasi</h4>
+<a class="text-primary/70 dark:text-white/70 hover:text-secondary underline-offset-4 hover:underline text-sm transition-opacity" href="#">Ketentuan Layanan</a>
+<a class="text-primary/70 dark:text-white/70 hover:text-secondary underline-offset-4 hover:underline text-sm transition-opacity" href="#">Kebijakan Privasi</a>
+</div>
+<div class="flex flex-col space-y-4">
+<h4 class="text-sm font-black tracking-widest uppercase mb-2 text-primary dark:text-white font-headline">Sosial Media</h4>
+<a class="text-primary/70 dark:text-white/70 hover:text-secondary underline-offset-4 hover:underline text-sm transition-opacity" href="#">Instagram</a>
+<a class="text-primary/70 dark:text-white/70 hover:text-secondary underline-offset-4 hover:underline text-sm transition-opacity" href="#">LinkedIn</a>
+</div>
+</div>
+<div class="px-12 py-8 border-t border-outline-variant/10 text-center md:text-left">
+<span class="text-[10px] font-bold tracking-[0.2em] uppercase text-primary/50 dark:text-white/50">
+                © 2024 PT TRIMITRA MULTI KREASI. ARCHITECTURAL PRECISION.
+            </span>
+</div>
+</footer>
+</body></html>

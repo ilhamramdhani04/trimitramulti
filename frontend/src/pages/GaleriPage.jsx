@@ -1,0 +1,410 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { SectionReveal, StaggerGroup, StaggerItem } from '../components/animation/Reveal'
+import LazyImage from '../components/ui/LazyImage'
+import {
+  getWordPressGalleryFromPageBySlugs,
+  isWordPressConfiguredForPages,
+} from '../data/wordpressPages'
+
+const galleryFilters = ['Semua', 'Booth Pameran', 'Event', 'Billboard']
+const filterToQuery = {
+  Semua: 'semua',
+  'Booth Pameran': 'booth-pameran',
+  Event: 'event',
+  Billboard: 'billboard',
+}
+
+const queryToFilter = Object.fromEntries(
+  Object.entries(filterToQuery).map(([filter, query]) => [query, filter]),
+)
+
+const ITEMS_PER_PAGE = 18
+const MAX_PAGINATION_NUMBERS = 10
+
+function buildPageItems(currentPage, totalPages) {
+  if (totalPages <= MAX_PAGINATION_NUMBERS) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1)
+  }
+
+  if (currentPage <= 5) {
+    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 'ellipsis-right', totalPages]
+  }
+
+  if (currentPage >= totalPages - 4) {
+    return [
+      1,
+      'ellipsis-left',
+      totalPages - 8,
+      totalPages - 7,
+      totalPages - 6,
+      totalPages - 5,
+      totalPages - 4,
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    ]
+  }
+
+  return [
+    1,
+    'ellipsis-left',
+    currentPage - 3,
+    currentPage - 2,
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    currentPage + 2,
+    currentPage + 3,
+    currentPage + 4,
+    'ellipsis-right',
+    totalPages,
+  ]
+}
+
+const fallbackGallery = [
+  { type: 'square', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-1/900/900', alt: 'Galeri 1' },
+  { type: 'tall', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-2/900/1200', alt: 'Galeri 2' },
+  { type: 'square', category: 'Billboard', src: 'https://picsum.photos/seed/gallery-3/900/900', alt: 'Galeri 3' },
+  { type: 'square', category: 'Event', src: 'https://picsum.photos/seed/gallery-4/900/900', alt: 'Galeri 4' },
+  { type: 'square', category: 'Event', src: 'https://picsum.photos/seed/gallery-5/900/900', alt: 'Galeri 5' },
+  { type: 'tall', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-6/900/1200', alt: 'Galeri 6' },
+  { type: 'tall', category: 'Billboard', src: 'https://picsum.photos/seed/gallery-7/900/1200', alt: 'Galeri 7' },
+  { type: 'wide', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-8/1400/820', alt: 'Galeri 8' },
+]
+
+function GaleriPage() {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [activeIndex, setActiveIndex] = useState(null)
+  const [galleryItems, setGalleryItems] = useState(fallbackGallery)
+  const [isLoadingWp, setIsLoadingWp] = useState(isWordPressConfiguredForPages())
+  const prefetchedImagesRef = useRef(new Set())
+
+  const activeFilter =
+    queryToFilter[searchParams.get('kategori') ?? 'semua'] ?? 'Semua'
+
+  const rawPage = Number(searchParams.get('page') ?? '1')
+  const currentPage = Number.isFinite(rawPage) && rawPage > 0 ? Math.floor(rawPage) : 1
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadGalleryFromWordPress() {
+      if (!isWordPressConfiguredForPages()) return
+      try {
+        const media = await getWordPressGalleryFromPageBySlugs(['galeri'])
+        if (!cancelled && media.length > 0) {
+          setGalleryItems(media)
+        }
+      } catch {
+        // Keep fallback gallery when WordPress media is unreachable.
+      } finally {
+        if (!cancelled) {
+          setIsLoadingWp(false)
+        }
+      }
+    }
+
+    loadGalleryFromWordPress()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const visibleGallery = useMemo(() => {
+    if (activeFilter === 'Semua') return galleryItems
+    return galleryItems.filter((item) => item.category === activeFilter)
+  }, [activeFilter, galleryItems])
+
+  const totalPages = Math.max(1, Math.ceil(visibleGallery.length / ITEMS_PER_PAGE))
+  const pageStart = (currentPage - 1) * ITEMS_PER_PAGE
+  const pagedGallery = useMemo(
+    () => visibleGallery.slice(pageStart, pageStart + ITEMS_PER_PAGE),
+    [visibleGallery, pageStart],
+  )
+  const pageItems = useMemo(
+    () => buildPageItems(currentPage, totalPages),
+    [currentPage, totalPages],
+  )
+
+  useEffect(() => {
+    if (currentPage <= totalPages) return
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('kategori', filterToQuery[activeFilter])
+      next.set('page', String(totalPages))
+      return next
+    })
+  }, [activeFilter, currentPage, setSearchParams, totalPages])
+
+  useEffect(() => {
+    if (activeIndex === null) return
+    if (activeIndex > pagedGallery.length - 1) {
+      setActiveIndex(0)
+    }
+  }, [activeIndex, pagedGallery.length])
+
+  useEffect(() => {
+    if (activeIndex === null) return undefined
+    if (pagedGallery.length === 0) return undefined
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setActiveIndex(null)
+        return
+      }
+
+      if (event.key === 'ArrowRight') {
+        setActiveIndex((prev) => {
+          if (prev === null) return 0
+          return (prev + 1) % pagedGallery.length
+        })
+      }
+
+      if (event.key === 'ArrowLeft') {
+        setActiveIndex((prev) => {
+          if (prev === null) return 0
+          return (prev - 1 + pagedGallery.length) % pagedGallery.length
+        })
+      }
+    }
+
+    document.body.classList.add('lightbox-open')
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.classList.remove('lightbox-open')
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [activeIndex, pagedGallery.length])
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || currentPage >= totalPages) return
+
+    const nextPageStart = currentPage * ITEMS_PER_PAGE
+    const nextPageItems = visibleGallery.slice(nextPageStart, nextPageStart + ITEMS_PER_PAGE)
+
+    nextPageItems.forEach((item) => {
+      if (!item?.src || prefetchedImagesRef.current.has(item.src)) return
+      const image = new window.Image()
+      image.decoding = 'async'
+      image.src = item.src
+      prefetchedImagesRef.current.add(item.src)
+    })
+  }, [currentPage, totalPages, visibleGallery])
+
+  useEffect(() => {
+    setActiveIndex(null)
+  }, [currentPage, activeFilter])
+
+  const handleFilterChange = (filter) => {
+    const queryValue = filterToQuery[filter]
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('kategori', queryValue)
+      next.set('page', '1')
+      return next
+    })
+  }
+
+  const handlePageChange = (page) => {
+    const nextPage = Math.min(totalPages, Math.max(1, page))
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('kategori', filterToQuery[activeFilter])
+      next.set('page', String(nextPage))
+      return next
+    })
+  }
+
+  return (
+    <>
+      <SectionReveal className="gallery-hero">
+        <div className="container">
+          <p className="kicker" style={{ color: '#ccb278' }}>
+            Beranda &nbsp;›&nbsp; Galeri
+          </p>
+          <h1 className="section-title">Galeri Karya Kami</h1>
+        </div>
+      </SectionReveal>
+
+      <SectionReveal className="gallery-filter">
+        <div className="container filter-pills">
+          {galleryFilters.map((filter) => (
+            <button
+              key={filter}
+              className={filter === activeFilter ? 'pill active' : 'pill'}
+              onClick={() => handleFilterChange(filter)}
+              type="button"
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+      </SectionReveal>
+
+      <SectionReveal className="section">
+        {isLoadingWp ? (
+          <div className="container gallery-grid" aria-label="Memuat galeri">
+            {Array.from({ length: ITEMS_PER_PAGE }, (_, index) => (
+              <article
+                key={`gallery-skeleton-${index}`}
+                className="gallery-grid-item square gallery-card card gallery-skeleton-card"
+                aria-hidden="true"
+              >
+                <div className="gallery-skeleton-block" />
+              </article>
+            ))}
+          </div>
+        ) : (
+          <StaggerGroup className="container gallery-grid" once={true} amount={0.08}>
+            {pagedGallery.map((item, idx) => (
+              <StaggerItem key={item.id || item.src} className={`gallery-grid-item ${item.type}`}>
+                <article className={`gallery-card card ${item.type}`}>
+                  <button
+                    type="button"
+                    className="gallery-lightbox-trigger"
+                    onClick={() => setActiveIndex(idx)}
+                    aria-label={`Buka gambar galeri ${pageStart + idx + 1}`}
+                  >
+                    <LazyImage
+                      src={item.src}
+                      alt={item.alt || `Gallery ${idx + 1}`}
+                      className="gallery-image"
+                    />
+                  </button>
+                </article>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+        )}
+
+        {totalPages > 1 && (
+          <div className="container gallery-pagination" aria-label="Navigasi halaman galeri">
+            <button
+              type="button"
+              className="gallery-page-btn"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+
+            <div className="gallery-page-number-wrap">
+              {pageItems.map((item, index) => {
+                if (typeof item === 'string') {
+                  return (
+                    <span key={`${item}-${index}`} className="gallery-page-ellipsis" aria-hidden="true">
+                      ...
+                    </span>
+                  )
+                }
+
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    className={`gallery-page-btn ${item === currentPage ? 'is-active' : ''}`}
+                    onClick={() => handlePageChange(item)}
+                    aria-current={item === currentPage ? 'page' : undefined}
+                  >
+                    {item}
+                  </button>
+                )
+              })}
+            </div>
+
+            <button
+              type="button"
+              className="gallery-page-btn"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </SectionReveal>
+
+      {activeIndex !== null && pagedGallery[activeIndex] && (
+        <div
+          className="gallery-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Lightbox galeri"
+          onClick={() => setActiveIndex(null)}
+        >
+          <button
+            type="button"
+            className="gallery-lightbox-close"
+            aria-label="Tutup lightbox"
+            onClick={() => setActiveIndex(null)}
+          >
+            ×
+          </button>
+
+          <button
+            type="button"
+            className="gallery-lightbox-nav prev"
+            aria-label="Gambar sebelumnya"
+            onClick={(event) => {
+              event.stopPropagation()
+              setActiveIndex((prev) => (prev - 1 + pagedGallery.length) % pagedGallery.length)
+            }}
+          >
+            ‹
+          </button>
+
+          <figure className="gallery-lightbox-figure" onClick={(event) => event.stopPropagation()}>
+            <img
+              src={pagedGallery[activeIndex].src}
+              alt={`Gallery ${activeIndex + 1}`}
+              className="gallery-lightbox-image"
+            />
+            <figcaption>
+              {pagedGallery[activeIndex].category} · {pageStart + activeIndex + 1}/{visibleGallery.length}
+            </figcaption>
+          </figure>
+
+          <button
+            type="button"
+            className="gallery-lightbox-nav next"
+            aria-label="Gambar berikutnya"
+            onClick={(event) => {
+              event.stopPropagation()
+              setActiveIndex((prev) => (prev + 1) % pagedGallery.length)
+            }}
+          >
+            ›
+          </button>
+        </div>
+      )}
+
+      <SectionReveal className="section" style={{ background: '#f0ede8', textAlign: 'center' }}>
+        <div className="container">
+          <p className="kicker">Mulai Proyek Anda</p>
+          <h2 style={{ fontSize: 64, lineHeight: 0.95, maxWidth: 760, margin: '0 auto' }}>
+            Wujudkan Visi Arsitektural Anda Bersama Kami.
+          </h2>
+          <button
+            className="btn dark"
+            style={{ marginTop: 22 }}
+            type="button"
+            onClick={() => navigate('/kontak-kami')}
+          >
+            Konsultasi Gratis
+          </button>
+          <div style={{ marginTop: 14 }}>
+            <Link className="muted" to="/kontak-kami">
+              Atau langsung kirim brief proyek Anda
+            </Link>
+          </div>
+        </div>
+      </SectionReveal>
+    </>
+  )
+}
+
+export default GaleriPage
