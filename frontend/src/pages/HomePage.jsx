@@ -196,11 +196,11 @@ function HomePage() {
     const journalButtonLabel = pickTextField(uiFields, ['journal_button_label'], 'Lihat Semua')
     const portfolioKicker = pickTextField(uiFields, ['portfolio_kicker'], 'Portofolio')
     const portfolioTitle = pickTextField(uiFields, ['portfolio_title'], 'Proyek Unggulan')
-    const ctaTitle = pickTextField(uiFields, ['cta_title', 'home_cta_title'], 'Siap Membangun Karya Ikonik Anda?')
-    const ctaCopy = pickTextField(uiFields, ['cta_copy', 'home_cta_copy'], 'Konsultasikan visi Anda dengan tim ahli kami untuk solusi ruang yang melampaui ekspektasi.')
-    const ctaPrimaryLabel = pickTextField(uiFields, ['cta_primary_label'], 'Hubungi Kami Sekarang')
+    const ctaTitle = pickTextField(uiFields, ['cta_title', 'home_cta_title'], 'Siap Wujudkan Aktivasi Brand yang Lebih Berdampak?')
+    const ctaCopy = pickTextField(uiFields, ['cta_copy', 'home_cta_copy'], 'Konsultasikan kebutuhan booth, event, dan media outdoor Anda bersama tim Trimitra untuk eksekusi yang lebih presisi.')
+    const ctaPrimaryLabel = pickTextField(uiFields, ['cta_primary_label'], 'Konsultasi Sekarang')
     const ctaPrimaryLink = pickLinkField(uiFields, ['cta_primary_link'], '/kontak-kami')
-    const ctaSecondaryLabel = pickTextField(uiFields, ['cta_secondary_label'], 'Lihat Proposal Harga')
+    const ctaSecondaryLabel = pickTextField(uiFields, ['cta_secondary_label'], 'Lihat Portofolio')
     const ctaSecondaryLink = pickLinkField(uiFields, ['cta_secondary_link'], '/layanan')
 
     return (
@@ -319,14 +319,14 @@ function HomePage() {
 
       <SectionReveal className="dark-cta">
         <div className="container home-dark-cta-shell">
-          <h2 className="home-dark-cta-title">Siap Membangun Karya Ikonik Anda?</h2>
+          <h2 className="home-dark-cta-title">Siap Wujudkan Aktivasi Brand yang Lebih Berdampak?</h2>
           <p className="muted home-dark-cta-copy">
-            Konsultasikan visi Anda dengan tim ahli kami untuk solusi ruang yang melampaui ekspektasi.
+            Konsultasikan kebutuhan booth, event, dan media outdoor Anda bersama tim Trimitra untuk eksekusi yang lebih presisi.
           </p>
           <div className="home-dark-cta-actions">
-            <Link className="btn" to="/kontak-kami" data-magnetic>Hubungi Kami Sekarang</Link>
+            <Link className="btn" to="/kontak-kami" data-magnetic>Konsultasi Sekarang</Link>
             <Link className="btn outline" to="/layanan" style={{ color: '#ece8dd', borderColor: '#5e5f57' }} data-magnetic>
-              Lihat Proposal Harga
+              Lihat Portofolio
             </Link>
           </div>
         </div>

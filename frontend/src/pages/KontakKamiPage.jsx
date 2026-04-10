@@ -45,10 +45,10 @@ function KontakKamiPage() {
     [wpPage],
   )
 
-  const pageTitle = pickTextField(uiFields, ['contact_title'], 'Mulai Dialog.')
-  const pageTitleHighlight = pickTextField(uiFields, ['contact_title_highlight'], 'Dialog.')
-  const pageSubtitle = pickTextField(uiFields, ['contact_subtitle'], 'Baik Anda membayangkan hunian pribadi atau ikon komersial, atelier kami siap menerjemahkan aspirasi Anda menjadi realitas arsitektur.')
-  const submitLabel = pickTextField(uiFields, ['contact_submit_label'], 'Kirim Inkuiri')
+  const pageTitle = pickTextField(uiFields, ['contact_title'], 'Mulai Konsultasi.')
+  const pageTitleHighlight = pickTextField(uiFields, ['contact_title_highlight'], 'Konsultasi.')
+  const pageSubtitle = pickTextField(uiFields, ['contact_subtitle'], 'Sampaikan kebutuhan booth pameran, event organizer, atau media outdoor Anda. Tim Trimitra siap membantu dari tahap perencanaan hingga eksekusi.')
+  const submitLabel = pickTextField(uiFields, ['contact_submit_label'], 'Kirim Permintaan Konsultasi')
 
   const addressText = contactInfo.address || 'Jl. Kemang Raya No. 10A, Mampang Prapatan, Jakarta Selatan, 12730'
   const primaryEmail = contactInfo.emails[0] || 'inquire@trimitra.id'

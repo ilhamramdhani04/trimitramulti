@@ -9,66 +9,66 @@ import { pickLinkField, pickTextField } from '../data/wpUiFields'
 const PRIMARY_SERVICE_PACKAGES = [
   {
     id: '01',
-    title: 'Booth Exhibition',
+    title: 'Booth Pameran',
     image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1800&q=80',
     imageAlt: 'Booth exhibition modern dengan pengunjung aktif.',
     shortDescription:
       'Kami merancang booth pameran dari konsep visual, alur interaksi, hingga eksekusi lapangan agar brand tampil menonjol dan mudah diingat.',
     cards: [
       {
-        title: 'Concept & 3D Design',
+        title: 'Konsep & Desain 3D',
         description: 'Layout booth dirancang berdasarkan target audiens, jalur traffic, dan narasi brand.',
       },
       {
-        title: 'Fabrication & Finishing',
+        title: 'Produksi & Finishing',
         description: 'Produksi material dan finishing detail dilakukan in-house untuk kualitas konsisten.',
       },
       {
-        title: 'On-site Setup',
+        title: 'Instalasi di Lokasi',
         description: 'Instalasi, pengujian teknis, dan handover dilakukan sebelum event dimulai.',
       },
     ],
   },
   {
     id: '02',
-    title: 'Event Organizer',
+    title: 'Penyelenggara Event',
     image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1800&q=80',
     imageAlt: 'Suasana event activation dengan panggung dan audiens.',
     shortDescription:
-      'Tim event kami menangani creative direction, produksi acara, hingga koordinasi lapangan agar momen brand berjalan rapi dan impactful.',
+      'Tim event kami menangani arahan kreatif, produksi acara, hingga koordinasi lapangan agar momen brand berjalan rapi dan berdampak.',
     cards: [
       {
-        title: 'Creative Direction',
+        title: 'Arahan Kreatif',
         description: 'Menyusun konsep acara, visual tone, dan storyline sesuai objektif campaign.',
       },
       {
-        title: 'Run of Show & Crew',
+        title: 'Rundown & Koordinasi Tim',
         description: 'Mengatur rundown rinci, technical cue, dan koordinasi seluruh tim produksi.',
       },
       {
-        title: 'Audience Experience',
+        title: 'Pengalaman Audiens',
         description: 'Mendesain touchpoint interaktif agar audiens terlibat aktif sepanjang acara.',
       },
     ],
   },
   {
     id: '03',
-    title: 'Outdoor Media',
+    title: 'Media Outdoor',
     image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?auto=format&fit=crop&w=1800&q=80',
     imageAlt: 'Pemandangan kota sebagai konteks media outdoor billboard.',
     shortDescription:
       'Layanan outdoor media Trimitra mengutamakan penempatan strategis dan desain visual singkat agar pesan brand terbaca cepat di jalur utama.',
     cards: [
       {
-        title: 'Spot Strategy',
+        title: 'Strategi Titik',
         description: 'Pemilihan titik berdasarkan pergerakan kendaraan dan profil audiens per area.',
       },
       {
-        title: 'Visual Adaptation',
+        title: 'Adaptasi Visual',
         description: 'Desain materi disesuaikan untuk durasi lihat singkat dengan hierarki pesan jelas.',
       },
       {
-        title: 'Installation & Monitoring',
+        title: 'Instalasi & Monitoring',
         description: 'Tim memastikan pemasangan rapi dan performa eksposur tetap terjaga selama tayang.',
       },
     ],
@@ -166,13 +166,13 @@ function LayananPage() {
     ['hero_copy', 'services_copy'],
     'Kami merancang, memproduksi, dan mengeksekusi pengalaman brand dari billboard, event, hingga booth pameran dengan standar premium.',
   )
-  const ctaTitle = pickTextField(uiFields, ['cta_title', 'services_cta_title'], 'Siap scale-up campaign brand Anda?')
+  const ctaTitle = pickTextField(uiFields, ['cta_title', 'services_cta_title'], 'Siap Wujudkan Aktivasi Brand yang Lebih Berdampak?')
   const ctaCopy = pickTextField(
     uiFields,
     ['cta_copy', 'services_cta_copy'],
-    'Tim Trimitra siap membantu dari konsep awal sampai eksekusi akhir dengan ritme kerja yang cepat dan presisi.',
+    'Tim Trimitra siap membantu dari tahap konsep hingga eksekusi akhir dengan alur kerja yang cepat, terukur, dan presisi.',
   )
-  const ctaPrimaryLabel = pickTextField(uiFields, ['cta_primary_label'], 'Mulai Konsultasi')
+  const ctaPrimaryLabel = pickTextField(uiFields, ['cta_primary_label'], 'Konsultasi Sekarang')
   const ctaPrimaryLink = pickLinkField(uiFields, ['cta_primary_link'], '/kontak-kami')
   const ctaSecondaryLabel = pickTextField(uiFields, ['cta_secondary_label'], 'Lihat Portofolio')
   const ctaSecondaryLink = pickLinkField(uiFields, ['cta_secondary_link'], '/galeri')
@@ -192,8 +192,8 @@ function LayananPage() {
             <p className="muted services-redesign-description">{pageCopy}</p>
 
             <div className="services-redesign-tags">
-              <span>Billboard</span>
-              <span>Event Organizer</span>
+              <span>Media Outdoor</span>
+              <span>Penyelenggara Event</span>
               <span>Booth Pameran</span>
             </div>
           </div>
@@ -290,7 +290,7 @@ function LayananPage() {
 
       <SectionReveal className="section services-redesign-cta">
         <div className="container services-redesign-cta-shell">
-          <p className="kicker">Start Your Project</p>
+          <p className="kicker">Mulai Proyek Anda</p>
           <h2>{ctaTitle}</h2>
           <p className="muted services-redesign-cta-copy">{ctaCopy}</p>
           <div className="services-redesign-cta-actions">

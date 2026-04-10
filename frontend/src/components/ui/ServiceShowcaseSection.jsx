@@ -5,22 +5,22 @@ import { SectionReveal } from '../animation/Reveal'
 const SERVICE_SPLIT_ITEMS = [
   {
     id: '01',
-    service: 'Booth Exhibition',
-    kicker: 'Spatial Experience Service',
-    title: 'Booth yang Mencuri Perhatian Audiens Sejak First Glance',
+    service: 'Booth Pameran',
+    kicker: 'Layanan Booth & Exhibition',
+    title: 'Booth Pameran yang Memperkuat Daya Tarik Brand di Area Event',
     copy:
-      'Layanan booth Trimitra dirancang untuk menghadirkan alur interaksi yang kuat dari area depan hingga titik closing, sehingga brand tampil premium dan conversion-ready.',
+      'Tim Trimitra menangani booth dari tahap konsep, produksi, hingga instalasi agar brand tampil menonjol, mudah dikenali, dan siap mendukung target interaksi pengunjung.',
     image:
       'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=1300&q=80',
     imageAlt: 'Tim sedang menyiapkan booth pameran modern dengan pencahayaan hangat.',
     benefits: [
       {
-        title: 'Custom 3D Concept',
-        copy: 'Visual konsep dipersiapkan detail sebelum produksi sehingga revisi lebih cepat dan terukur.',
+        title: 'Konsep 3D Sesuai Brand',
+        copy: 'Desain visual dirancang berdasarkan objektif campaign, karakter brand, dan kebutuhan area pameran.',
       },
       {
-        title: 'Fabrication In-House',
-        copy: 'Konstruksi booth dikerjakan tim internal agar kualitas dan timeline tetap konsisten.',
+        title: 'Produksi & Instalasi Presisi',
+        copy: 'Proses fabrication dan pemasangan dikelola terukur agar kualitas rapi dan timeline tetap aman.',
       },
     ],
     cta: '/kontak-kami',
@@ -28,43 +28,43 @@ const SERVICE_SPLIT_ITEMS = [
   {
     id: '02',
     service: 'Event Organizer',
-    kicker: 'Activation Service',
-    title: 'Event Activation yang Terkurasi untuk Momen Brand Impact',
+    kicker: 'Layanan Event & Aktivasi',
+    title: 'Event Organizer untuk Aktivasi Brand yang Terukur dan Berkesan',
     copy:
-      'Kami orkestrasi event dari creative direction sampai eksekusi hari-H agar ritme acara hidup, transisi antar segmen mulus, dan audiens tetap engaged.',
+      'Kami mengelola event dari perencanaan konsep, rundown, hingga koordinasi pelaksanaan agar acara berjalan rapi, audiens tetap engaged, dan pesan brand tersampaikan kuat.',
     image:
       'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1300&q=80',
     imageAlt: 'Suasana event perusahaan dengan stage utama dan audiens.',
     benefits: [
       {
-        title: 'Creative Runbook',
-        copy: 'Skenario event disusun detail mulai dari opening sequence hingga closing momentum.',
+        title: 'Perencanaan Acara End-to-End',
+        copy: 'Struktur acara disusun dari pra-produksi hingga evaluasi untuk menjaga kualitas eksekusi.',
       },
       {
-        title: 'Showflow Control',
-        copy: 'Koordinasi talent, stage, operator, dan teknis dijaga real-time selama acara berjalan.',
+        title: 'Eksekusi Hari-H Terkendali',
+        copy: 'Koordinasi tim kreatif, teknis, dan operasional dijalankan real-time selama event berlangsung.',
       },
     ],
     cta: '/kontak-kami',
   },
   {
     id: '03',
-    service: 'Outdoor Media',
-    kicker: 'Visibility Service',
-    title: 'Penempatan Outdoor yang Tepat untuk Recall Lebih Kuat',
+    service: 'Media Outdoor',
+    kicker: 'Layanan Billboard & Outdoor',
+    title: 'Media Outdoor Strategis untuk Jangkauan dan Recall yang Lebih Kuat',
     copy:
-      'Layanan media outdoor Trimitra menitikberatkan pada strategi titik, kejelasan visual, dan konsistensi eksposur agar pesan brand terbaca dalam waktu singkat.',
+      'Layanan media outdoor Trimitra fokus pada pemilihan titik strategis, adaptasi materi visual, dan konsistensi eksposur agar pesan brand cepat terbaca di jalur traffic tinggi.',
     image:
       'https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=1300&q=80',
     imageAlt: 'Billboard outdoor di area kota dengan traffic padat.',
     benefits: [
       {
-        title: 'Location Mapping',
-        copy: 'Pemilihan lokasi berbasis arus traffic dan profil audiens area target.',
+        title: 'Analisis Titik Penempatan',
+        copy: 'Pemilihan lokasi dilakukan berbasis arus kendaraan, visibilitas, dan profil audiens area.',
       },
       {
-        title: 'Visual Adaptation',
-        copy: 'Materi kreatif dioptimalkan untuk format outdoor dengan hirarki pesan cepat tangkap.',
+        title: 'Adaptasi Materi Kreatif',
+        copy: 'Materi visual dioptimalkan untuk format outdoor agar tetap jelas dan mudah dipahami sekilas.',
       },
     ],
     cta: '/layanan',
@@ -79,10 +79,10 @@ function ServiceShowcaseSection() {
       <div className="container service-showcase-container">
         <div className="service-showcase-head">
           <p className="kicker">Layanan Kami</p>
-          <h2 className="service-showcase-title text-shimmer">Split Cards Alternating</h2>
+          <h2 className="service-showcase-title text-shimmer">Solusi Layanan Utama Trimitra</h2>
           <p className="muted">
-            Tiga layanan utama Trimitra disusun zig-zag agar mudah dipindai, rapi dipahami,
-            dan tetap conversion-friendly untuk pengunjung baru.
+            Tiga layanan utama kami dirancang untuk membantu brand tampil menonjol melalui
+            booth pameran, event organizer, dan media outdoor dengan eksekusi yang presisi.
           </p>
         </div>
 
