@@ -1,7 +1,7 @@
 import { withCache } from './wpCache'
 
 const WP_SITE_URL = (import.meta.env.VITE_WP_SITE_URL || '').replace(/\/$/, '')
-const WP_CACHE_TTL_MS = 5 * 60 * 1000
+const WP_CACHE_TTL_MS = 60 * 1000
 const WP_FETCH_TIMEOUT_MS = 6500
 
 const hasWindow = typeof window !== 'undefined'
@@ -44,7 +44,7 @@ function normalizeCategory(post, categoriesById) {
 }
 
 function normalizeImage(post) {
-  return post?.jetpack_featured_media_url || 'https://picsum.photos/seed/blog-fallback/900/600'
+  return post?.jetpack_featured_media_url || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80'
 }
 
 function normalizePost(post, categoriesById) {
@@ -64,40 +64,52 @@ function normalizePost(post, categoriesById) {
   }
 }
 
-async function fetchWp(endpoint, params = {}) {
+async function requestWordPress(url) {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), WP_FETCH_TIMEOUT_MS)
+
+  let response
+  try {
+    response = await fetch(url, { signal: controller.signal })
+  } finally {
+    clearTimeout(timeoutId)
+  }
+
+  if (!response.ok) {
+    throw new Error(`WordPress request failed: ${response.status}`)
+  }
+
+  const data = await response.json()
+  const totalPages = Number(response.headers.get('X-WP-TotalPages') || '1')
+  const totalItems = Number(response.headers.get('X-WP-Total') || String(Array.isArray(data) ? data.length : 0))
+
+  return { data, totalPages, totalItems }
+}
+
+async function fetchWp(endpoint, params = {}, options = {}) {
+  const {
+    skipCache = false,
+    ttlMs = WP_CACHE_TTL_MS,
+    staleWhileRevalidate = true,
+  } = options
+
   const query = new URLSearchParams(params).toString()
   const url = `${WP_SITE_URL}/wp-json/wp/v2/${endpoint}${query ? `?${query}` : ''}`
 
-  return withCache(`wp:${url}`, WP_CACHE_TTL_MS, async () => {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), WP_FETCH_TIMEOUT_MS)
+  if (skipCache) {
+    return requestWordPress(url)
+  }
 
-    let response
-    try {
-      response = await fetch(url, { signal: controller.signal })
-    } finally {
-      clearTimeout(timeoutId)
-    }
-
-    if (!response.ok) {
-      throw new Error(`WordPress request failed: ${response.status}`)
-    }
-
-    const data = await response.json()
-    const totalPages = Number(response.headers.get('X-WP-TotalPages') || '1')
-    const totalItems = Number(response.headers.get('X-WP-Total') || String(Array.isArray(data) ? data.length : 0))
-
-    return { data, totalPages, totalItems }
-  })
+  return withCache(`wp:${url}`, ttlMs, async () => requestWordPress(url), { staleWhileRevalidate })
 }
 
-async function getCategoriesLookup() {
+async function getCategoriesLookup(options = {}) {
   const firstPage = await fetchWp('categories', {
     per_page: '100',
     page: '1',
     _fields: 'id,name',
     hide_empty: 'false',
-  })
+  }, options)
 
   let categories = Array.isArray(firstPage.data) ? firstPage.data : []
 
@@ -110,7 +122,7 @@ async function getCategoriesLookup() {
           page: String(page),
           _fields: 'id,name',
           hide_empty: 'false',
-        }),
+        }, options),
       )
     }
 
@@ -129,8 +141,20 @@ export function isWordPressConfigured() {
   return Boolean(WP_SITE_URL)
 }
 
-export async function getBlogPostsFromWordPress({ perPage = 100, allPages = true } = {}) {
+export async function getBlogPostsFromWordPress({
+  perPage = 100,
+  allPages = true,
+  skipCache = false,
+  staleWhileRevalidate = true,
+  ttlMs = WP_CACHE_TTL_MS,
+} = {}) {
   if (!isWordPressConfigured()) return []
+
+  const fetchOptions = {
+    skipCache,
+    staleWhileRevalidate,
+    ttlMs,
+  }
 
   const clampedPerPage = Math.min(100, Math.max(1, perPage))
 
@@ -141,7 +165,7 @@ export async function getBlogPostsFromWordPress({ perPage = 100, allPages = true
     orderby: 'date',
     order: 'desc',
     _fields: 'id,slug,title.rendered,excerpt.rendered,date,categories,jetpack_featured_media_url',
-  })
+  }, fetchOptions)
 
   let posts = Array.isArray(firstPage.data) ? firstPage.data : []
 
@@ -156,7 +180,7 @@ export async function getBlogPostsFromWordPress({ perPage = 100, allPages = true
           orderby: 'date',
           order: 'desc',
           _fields: 'id,slug,title.rendered,excerpt.rendered,date,categories,jetpack_featured_media_url',
-        }),
+        }, fetchOptions),
       )
     }
 
@@ -168,24 +192,37 @@ export async function getBlogPostsFromWordPress({ perPage = 100, allPages = true
     })
   }
 
-  const categoriesById = await getCategoriesLookup()
+  const categoriesById = await getCategoriesLookup(fetchOptions)
 
   return posts.map((post) => normalizePost(post, categoriesById)).filter((post) => post.slug)
 }
 
-export async function getBlogPostBySlugFromWordPress(slug) {
+export async function getBlogPostBySlugFromWordPress(
+  slug,
+  {
+    skipCache = false,
+    staleWhileRevalidate = true,
+    ttlMs = WP_CACHE_TTL_MS,
+  } = {},
+) {
   if (!isWordPressConfigured() || !slug) return null
+
+  const fetchOptions = {
+    skipCache,
+    staleWhileRevalidate,
+    ttlMs,
+  }
 
   const result = await fetchWp('posts', {
     slug,
     status: 'publish',
     _fields: 'id,slug,title.rendered,excerpt.rendered,content.rendered,date,categories,jetpack_featured_media_url',
-  })
+  }, fetchOptions)
 
   const posts = Array.isArray(result.data) ? result.data : []
 
   if (!Array.isArray(posts) || posts.length === 0) return null
-  const categoriesById = await getCategoriesLookup()
+  const categoriesById = await getCategoriesLookup(fetchOptions)
   return normalizePost(posts[0], categoriesById)
 }
 

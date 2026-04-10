@@ -1,10 +1,139 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, useReducedMotion } from 'framer-motion'
 import { SectionReveal, StaggerGroup, StaggerItem } from '../components/animation/Reveal'
 import LazyImage from '../components/ui/LazyImage'
 import { getWordPressPageBySlugs, isWordPressConfiguredForPages } from '../data/wordpressPages'
+import { pickLinkField, pickTextField } from '../data/wpUiFields'
+
+const PRIMARY_SERVICE_PACKAGES = [
+  {
+    id: '01',
+    title: 'Booth Exhibition',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1800&q=80',
+    imageAlt: 'Booth exhibition modern dengan pengunjung aktif.',
+    shortDescription:
+      'Kami merancang booth pameran dari konsep visual, alur interaksi, hingga eksekusi lapangan agar brand tampil menonjol dan mudah diingat.',
+    cards: [
+      {
+        title: 'Concept & 3D Design',
+        description: 'Layout booth dirancang berdasarkan target audiens, jalur traffic, dan narasi brand.',
+      },
+      {
+        title: 'Fabrication & Finishing',
+        description: 'Produksi material dan finishing detail dilakukan in-house untuk kualitas konsisten.',
+      },
+      {
+        title: 'On-site Setup',
+        description: 'Instalasi, pengujian teknis, dan handover dilakukan sebelum event dimulai.',
+      },
+    ],
+  },
+  {
+    id: '02',
+    title: 'Event Organizer',
+    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1800&q=80',
+    imageAlt: 'Suasana event activation dengan panggung dan audiens.',
+    shortDescription:
+      'Tim event kami menangani creative direction, produksi acara, hingga koordinasi lapangan agar momen brand berjalan rapi dan impactful.',
+    cards: [
+      {
+        title: 'Creative Direction',
+        description: 'Menyusun konsep acara, visual tone, dan storyline sesuai objektif campaign.',
+      },
+      {
+        title: 'Run of Show & Crew',
+        description: 'Mengatur rundown rinci, technical cue, dan koordinasi seluruh tim produksi.',
+      },
+      {
+        title: 'Audience Experience',
+        description: 'Mendesain touchpoint interaktif agar audiens terlibat aktif sepanjang acara.',
+      },
+    ],
+  },
+  {
+    id: '03',
+    title: 'Outdoor Media',
+    image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?auto=format&fit=crop&w=1800&q=80',
+    imageAlt: 'Pemandangan kota sebagai konteks media outdoor billboard.',
+    shortDescription:
+      'Layanan outdoor media Trimitra mengutamakan penempatan strategis dan desain visual singkat agar pesan brand terbaca cepat di jalur utama.',
+    cards: [
+      {
+        title: 'Spot Strategy',
+        description: 'Pemilihan titik berdasarkan pergerakan kendaraan dan profil audiens per area.',
+      },
+      {
+        title: 'Visual Adaptation',
+        description: 'Desain materi disesuaikan untuk durasi lihat singkat dengan hierarki pesan jelas.',
+      },
+      {
+        title: 'Installation & Monitoring',
+        description: 'Tim memastikan pemasangan rapi dan performa eksposur tetap terjaga selama tayang.',
+      },
+    ],
+  },
+]
+
+function CountUpNumber({ value, suffix = '', duration = 1300 }) {
+  const prefersReducedMotion = useReducedMotion()
+  const anchorRef = useRef(null)
+  const rafRef = useRef(0)
+  const [displayValue, setDisplayValue] = useState(prefersReducedMotion ? value : 0)
+
+  useEffect(() => {
+    if (prefersReducedMotion) return undefined
+
+    const node = anchorRef.current
+    if (!node) return undefined
+
+    let hasStarted = false
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || hasStarted) return
+
+          hasStarted = true
+          const startedAt = performance.now()
+
+          const tick = (now) => {
+            const progress = Math.min((now - startedAt) / duration, 1)
+            const eased = 1 - (1 - progress) ** 3
+            setDisplayValue(Math.round(value * eased))
+
+            if (progress < 1) {
+              rafRef.current = requestAnimationFrame(tick)
+            }
+          }
+
+          rafRef.current = requestAnimationFrame(tick)
+          observer.disconnect()
+        })
+      },
+      { threshold: 0.4 },
+    )
+
+    observer.observe(node)
+
+    return () => {
+      observer.disconnect()
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [duration, prefersReducedMotion, value])
+
+  const shownValue = prefersReducedMotion ? value : displayValue
+
+  return (
+    <span ref={anchorRef}>
+      {shownValue}
+      {suffix}
+    </span>
+  )
+}
 
 function LayananPage() {
+  const prefersReducedMotion = useReducedMotion()
   const [wpPage, setWpPage] = useState(null)
 
   useEffect(() => {
@@ -28,164 +157,156 @@ function LayananPage() {
     }
   }, [])
 
-  if (wpPage) {
-    return (
-      <>
-        <SectionReveal className="section cms-page-shell">
-          <div className="container">
-            <p className="kicker">Layanan Kami</p>
-            <h1 className="section-title">{wpPage.title}</h1>
-            {wpPage.image && (
-              <div className="blog-detail-image-wrap" style={{ marginTop: 18, marginBottom: 22 }}>
-                <LazyImage
-                  src={wpPage.image}
-                  alt={wpPage.title}
-                  className="blog-detail-image"
-                />
-              </div>
-            )}
-            <article className="blog-detail-content cms-page-content" dangerouslySetInnerHTML={{ __html: wpPage.contentHtml }} />
-          </div>
-        </SectionReveal>
+  const uiFields = wpPage ? { ...(wpPage.meta || {}), ...(wpPage.acf || {}) } : {}
 
-        <SectionReveal className="section" style={{ textAlign: 'center' }}>
-          <div className="container">
-            <h2 style={{ fontSize: 60, lineHeight: 1.02 }}>Siap membangun visi Anda berikutnya?</h2>
-            <p className="muted" style={{ marginTop: 16 }}>
-              Tim arsitek, desainer, dan strategis kami siap menghidupkan proyek Anda.
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 22, flexWrap: 'wrap' }}>
-              <Link className="btn" to="/berita">Unduh Kredensial</Link>
-              <Link className="btn outline" to="/kontak-kami">Hubungi Studio Kami</Link>
-            </div>
-          </div>
-        </SectionReveal>
-      </>
-    )
-  }
+  const pageKicker = pickTextField(uiFields, ['page_kicker', 'services_kicker'], 'Produk & Jasa')
+  const pageTitle = pickTextField(uiFields, ['hero_title', 'services_title'], wpPage?.title || 'Solusi Produk & Jasa Trimitra')
+  const pageCopy = pickTextField(
+    uiFields,
+    ['hero_copy', 'services_copy'],
+    'Kami merancang, memproduksi, dan mengeksekusi pengalaman brand dari billboard, event, hingga booth pameran dengan standar premium.',
+  )
+  const ctaTitle = pickTextField(uiFields, ['cta_title', 'services_cta_title'], 'Siap scale-up campaign brand Anda?')
+  const ctaCopy = pickTextField(
+    uiFields,
+    ['cta_copy', 'services_cta_copy'],
+    'Tim Trimitra siap membantu dari konsep awal sampai eksekusi akhir dengan ritme kerja yang cepat dan presisi.',
+  )
+  const ctaPrimaryLabel = pickTextField(uiFields, ['cta_primary_label'], 'Mulai Konsultasi')
+  const ctaPrimaryLink = pickLinkField(uiFields, ['cta_primary_link'], '/kontak-kami')
+  const ctaSecondaryLabel = pickTextField(uiFields, ['cta_secondary_label'], 'Lihat Portofolio')
+  const ctaSecondaryLink = pickLinkField(uiFields, ['cta_secondary_link'], '/galeri')
 
   return (
     <>
-      <SectionReveal className="section service-hero">
-        <div className="container service-hero-grid">
-          <div>
-            <p className="kicker">Layanan Kami</p>
-            <h1 className="section-title">Membangun Pengalaman.</h1>
-          </div>
-          <p className="muted" style={{ alignSelf: 'end' }}>
-            Kami mengubah konsep menjadi landmark fisik dan digital. Pendekatan
-            terpadu kami memastikan presisi mulai dari cetak biru pertama hingga
-            interaksi akhir.
-          </p>
+      <SectionReveal className="section services-redesign-hero">
+        <div className="services-redesign-hero-ambient" aria-hidden="true">
+          <span className="services-redesign-orb orb-a" />
+          <span className="services-redesign-orb orb-b" />
+          <span className="services-redesign-orb orb-c" />
         </div>
-      </SectionReveal>
+        <div className="container services-redesign-hero-grid">
+          <div className="services-redesign-hero-copy">
+            <p className="kicker">{pageKicker}</p>
+            <h1 className="services-redesign-title">{pageTitle}</h1>
+            <p className="muted services-redesign-description">{pageCopy}</p>
 
-      <SectionReveal className="section" style={{ background: '#f2efe9' }}>
-        <div className="container service-row">
-          <StaggerItem className="service-image card">
-            <LazyImage src="https://picsum.photos/seed/service-1/1300/780" alt="Pemasaran billboard" />
-          </StaggerItem>
-          <StaggerGroup className="service-copy">
-            <p className="kicker">01</p>
-            <h2 style={{ fontSize: 54 }}>Jasa Pemasaran Billboard</h2>
-            <p className="muted" style={{ marginTop: 12 }}>
-              Solusi pemasaran billboard kami memperkuat visibilitas merek di
-              titik lalu lintas tinggi dengan strategi placement yang terukur.
-            </p>
-            <ul className="muted" style={{ marginTop: 12, paddingLeft: 16 }}>
-              <li>Perencanaan lokasi billboard strategis</li>
-              <li>Analisis jangkauan dan frekuensi tayang</li>
-              <li>Optimasi pesan untuk dampak kampanye</li>
-            </ul>
-            <Link className="btn" to="/kontak-kami" style={{ marginTop: 16 }}>
-              Minta Penawaran
-            </Link>
-          </StaggerGroup>
-        </div>
-      </SectionReveal>
-
-      <SectionReveal className="section">
-        <div className="container value-3 card">
-          <div>
-            <h3 style={{ color: 'var(--danger)', fontSize: 56 }}>Presisi</h3>
-            <p className="muted">Setiap milimeter diukur untuk ketepatan eksekusi.</p>
-          </div>
-          <div>
-            <h3 style={{ color: 'var(--danger)', fontSize: 56 }}>Taktilitas</h3>
-            <p className="muted">Kami percaya pada bobot material yang nyata.</p>
-          </div>
-          <div>
-            <h3 style={{ color: 'var(--danger)', fontSize: 56 }}>Visi</h3>
-            <p className="muted">Dirancang untuk warisan jangka panjang.</p>
-          </div>
-        </div>
-      </SectionReveal>
-
-      <SectionReveal className="section">
-        <div className="container service-row reverse">
-          <StaggerItem className="service-image card">
-            <LazyImage src="https://picsum.photos/seed/service-2/1300/780" alt="Event organizer" />
-          </StaggerItem>
-          <StaggerGroup className="service-copy">
-            <p className="kicker">02</p>
-            <h2 style={{ fontSize: 54 }}>Jasa Event Organizer</h2>
-            <p className="muted" style={{ marginTop: 12 }}>
-              Kami merancang alur acara yang memandu peserta melalui perjalanan
-              naratif, menggabungkan logistik dengan konsep spasial.
-            </p>
-            <ul className="muted" style={{ marginTop: 12, paddingLeft: 16 }}>
-              <li>Desain narasi spasial</li>
-              <li>Rekayasa logistik mulus</li>
-              <li>Kurasi multi-sensori</li>
-            </ul>
-            <Link className="btn" to="/kontak-kami" style={{ marginTop: 16, background: '#c74625', color: '#fff' }}>
-              Rencanakan Acara Anda
-            </Link>
-          </StaggerGroup>
-        </div>
-      </SectionReveal>
-
-      <SectionReveal className="section" style={{ background: '#e9e5df' }}>
-        <div className="container service-row">
-          <StaggerItem className="service-image card">
-            <LazyImage src="https://picsum.photos/seed/service-3/1300/780" alt="Booth contractor" />
-          </StaggerItem>
-          <StaggerGroup className="service-copy">
-            <p className="kicker">03</p>
-            <h2 style={{ fontSize: 54 }}>Jasa Kontraktor Booth Pameran</h2>
-            <p className="muted" style={{ marginTop: 12 }}>
-              Booth pameran kami dirancang untuk integritas struktural dan
-              dominasi estetika di lingkungan dengan lalu lintas tinggi.
-            </p>
-            <div className="grid-2" style={{ marginTop: 14 }}>
-              <div className="card" style={{ padding: 14 }}>
-                <strong>Kualitas Bangun</strong>
-                <p className="muted">Material premium dan pengerjaan halus.</p>
-              </div>
-              <div className="card" style={{ padding: 14 }}>
-                <strong>Inovasi</strong>
-                <p className="muted">Solusi teknologi terintegrasi.</p>
-              </div>
+            <div className="services-redesign-tags">
+              <span>Billboard</span>
+              <span>Event Organizer</span>
+              <span>Booth Pameran</span>
             </div>
-            <Link className="btn dark" to="/kontak-kami" style={{ marginTop: 16 }}>
-              Minta Penawaran
-            </Link>
+          </div>
+
+          <StaggerGroup className="services-redesign-metrics" once amount={0.35}>
+            <StaggerItem>
+              <article className="services-redesign-metric-card">
+                <h3>
+                  <CountUpNumber value={420} suffix="+" />
+                </h3>
+                <p>Titik Aktivasi Outdoor</p>
+              </article>
+            </StaggerItem>
+            <StaggerItem>
+              <article className="services-redesign-metric-card">
+                <h3>
+                  <CountUpNumber value={17} />
+                </h3>
+                <p>Kota Cakupan Proyek</p>
+              </article>
+            </StaggerItem>
+            <StaggerItem>
+              <article className="services-redesign-metric-card">
+                <h3>
+                  <CountUpNumber value={96} suffix="%" />
+                </h3>
+                <p>On-Time Delivery Rate</p>
+              </article>
+            </StaggerItem>
           </StaggerGroup>
         </div>
       </SectionReveal>
 
-      <SectionReveal className="section" style={{ textAlign: 'center' }}>
-        <div className="container">
-          <h2 style={{ fontSize: 60, lineHeight: 1.02 }}>Siap membangun visi Anda berikutnya?</h2>
-          <p className="muted" style={{ marginTop: 16 }}>
-            Tim arsitek, desainer, dan strategis kami siap menghidupkan proyek Anda.
-          </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 22, flexWrap: 'wrap' }}>
-            <Link className="btn" to="/berita">Unduh Kredensial</Link>
-            <Link className="btn outline" to="/kontak-kami">Hubungi Studio Kami</Link>
+      <SectionReveal className="section services-redesign-catalog">
+        <div className="container services-spotlight-shell">
+          <div className="services-redesign-head">
+            <p className="kicker">Paket Produk & Jasa</p>
+            <h2 className="services-redesign-head-title">
+              <span>3 layanan utama</span>
+              <img
+                src="/logo-trimitra.webp"
+                alt="Logo Trimitra"
+                className="services-redesign-head-logo"
+                loading="lazy"
+                decoding="async"
+              />
+            </h2>
+            <p className="muted services-spotlight-copy">
+              Setiap layanan disusun dengan alur kerja yang jelas, mulai dari strategi, produksi, sampai eksekusi lapangan.
+            </p>
+          </div>
+
+          <div className="services-main-flow" aria-label="Tiga layanan utama Trimitra">
+            {PRIMARY_SERVICE_PACKAGES.map((service, index) => {
+              const isReversed = index % 2 === 1
+
+              return (
+                <motion.article
+                  key={service.id}
+                  className={`services-main-item ${isReversed ? 'is-reversed' : ''}`}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 34 }}
+                  whileInView={
+                    prefersReducedMotion
+                      ? undefined
+                      : { opacity: 1, y: 0, transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] } }
+                  }
+                  viewport={{ once: true, amount: 0.22 }}
+                >
+                  <figure className="services-main-media">
+                    <LazyImage src={service.image} alt={service.imageAlt} className="services-main-media-image" />
+                    <span className="services-main-media-glow" aria-hidden="true" />
+                  </figure>
+
+                  <div className="services-main-content">
+                    <p className="services-main-id">Layanan {service.id}</p>
+                    <h3>{service.title}</h3>
+                    <p className="muted services-main-description">{service.shortDescription}</p>
+
+                    <div className="services-main-card-grid">
+                      {service.cards.map((card) => (
+                        <article key={card.title} className="services-main-card">
+                          <h4>{card.title}</h4>
+                          <p>{card.description}</p>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                </motion.article>
+              )
+            })}
           </div>
         </div>
       </SectionReveal>
+
+      <SectionReveal className="section services-redesign-cta">
+        <div className="container services-redesign-cta-shell">
+          <p className="kicker">Start Your Project</p>
+          <h2>{ctaTitle}</h2>
+          <p className="muted services-redesign-cta-copy">{ctaCopy}</p>
+          <div className="services-redesign-cta-actions">
+            <Link className="btn" to={ctaPrimaryLink}>{ctaPrimaryLabel}</Link>
+            <Link className="btn outline" to={ctaSecondaryLink}>{ctaSecondaryLabel}</Link>
+          </div>
+        </div>
+      </SectionReveal>
+
+      {wpPage?.contentHtml ? (
+        <SectionReveal className="section cms-page-shell">
+          <div className="container">
+            <article className="blog-detail-content cms-page-content" dangerouslySetInnerHTML={{ __html: wpPage.contentHtml }} />
+          </div>
+        </SectionReveal>
+      ) : null}
     </>
   )
 }

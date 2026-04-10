@@ -1,19 +1,60 @@
-import { useEffect, useState } from 'react'
-import { useToast } from '../components/ui/ToastProvider'
+import { useEffect, useMemo, useState } from 'react'
+import { useToast } from '../components/ui/useToast'
 import { SectionReveal, StaggerGroup, StaggerItem } from '../components/animation/Reveal'
-import { getWordPressPageBySlugs, isWordPressConfiguredForPages } from '../data/wordpressPages'
+import {
+  extractContactInfoFromHtml,
+  getWordPressPageBySlugs,
+  isWordPressConfiguredForPages,
+} from '../data/wordpressPages'
+import { pickTextField } from '../data/wpUiFields'
 
 const CONTACT_DRAFT_KEY = 'trimitra-contact-draft-v1'
+const EMPTY_FORM_DATA = {
+  name: '',
+  email: '',
+  company: '',
+  brief: '',
+}
+
+function getInitialDraftFormData() {
+  if (typeof window === 'undefined') return EMPTY_FORM_DATA
+
+  const raw = window.localStorage.getItem(CONTACT_DRAFT_KEY)
+  if (!raw) return EMPTY_FORM_DATA
+
+  try {
+    const parsed = JSON.parse(raw)
+    return { ...EMPTY_FORM_DATA, ...parsed }
+  } catch {
+    window.localStorage.removeItem(CONTACT_DRAFT_KEY)
+    return EMPTY_FORM_DATA
+  }
+}
 
 function KontakKamiPage() {
   const { showToast } = useToast()
   const [wpPage, setWpPage] = useState(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    brief: '',
-  })
+  const [formData, setFormData] = useState(() => getInitialDraftFormData())
+
+  const contactInfo = useMemo(() => {
+    return extractContactInfoFromHtml(wpPage?.contentHtml || '')
+  }, [wpPage])
+
+  const uiFields = useMemo(
+    () => ({ ...(wpPage?.meta || {}), ...(wpPage?.acf || {}) }),
+    [wpPage],
+  )
+
+  const pageTitle = pickTextField(uiFields, ['contact_title'], 'Mulai Dialog.')
+  const pageTitleHighlight = pickTextField(uiFields, ['contact_title_highlight'], 'Dialog.')
+  const pageSubtitle = pickTextField(uiFields, ['contact_subtitle'], 'Baik Anda membayangkan hunian pribadi atau ikon komersial, atelier kami siap menerjemahkan aspirasi Anda menjadi realitas arsitektur.')
+  const submitLabel = pickTextField(uiFields, ['contact_submit_label'], 'Kirim Inkuiri')
+
+  const addressText = contactInfo.address || 'Jl. Kemang Raya No. 10A, Mampang Prapatan, Jakarta Selatan, 12730'
+  const primaryEmail = contactInfo.emails[0] || 'inquire@trimitra.id'
+  const secondaryEmail = contactInfo.emails[1] || 'press@trimitra.id'
+  const primaryPhone = contactInfo.phones[0] || '+62 21 555 0192'
+  const whatsappUrl = contactInfo.whatsapp || 'https://wa.me/62215550192'
 
   useEffect(() => {
     let cancelled = false
@@ -37,18 +78,6 @@ function KontakKamiPage() {
   }, [])
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(CONTACT_DRAFT_KEY)
-    if (!raw) return
-
-    try {
-      const parsed = JSON.parse(raw)
-      setFormData((prev) => ({ ...prev, ...parsed }))
-    } catch {
-      window.localStorage.removeItem(CONTACT_DRAFT_KEY)
-    }
-  }, [])
-
-  useEffect(() => {
     const hasValue = Object.values(formData).some((value) => value.trim() !== '')
     if (!hasValue) {
       window.localStorage.removeItem(CONTACT_DRAFT_KEY)
@@ -66,12 +95,7 @@ function KontakKamiPage() {
   const handleSubmit = (event) => {
     event.preventDefault()
     showToast('Pesan berhasil dikirim. Tim kami akan menghubungi Anda segera.', 'success')
-    setFormData({
-      name: '',
-      email: '',
-      company: '',
-      brief: '',
-    })
+    setFormData(EMPTY_FORM_DATA)
     window.localStorage.removeItem(CONTACT_DRAFT_KEY)
   }
 
@@ -79,11 +103,10 @@ function KontakKamiPage() {
     <SectionReveal className="section">
       <div className="container">
         <h1 className="section-title" style={{ marginBottom: 14 }}>
-          Mulai <em style={{ color: 'var(--gold-deep)' }}>Dialog.</em>
+          {pageTitle.replace(pageTitleHighlight, '').trim()} <em style={{ color: 'var(--gold-deep)' }}>{pageTitleHighlight}</em>
         </h1>
         <p className="muted" style={{ maxWidth: 760 }}>
-          Baik Anda membayangkan hunian pribadi atau ikon komersial, atelier kami
-          siap menerjemahkan aspirasi Anda menjadi realitas arsitektur.
+          {pageSubtitle}
         </p>
 
         {wpPage?.contentHtml && (
@@ -146,7 +169,7 @@ function KontakKamiPage() {
             </div>
 
             <button className="btn" type="submit" style={{ marginTop: 16 }}>
-              Kirim Inkuiri
+              {submitLabel}
             </button>
           </form>
 
@@ -155,7 +178,7 @@ function KontakKamiPage() {
               <span className="contact-icon" />
               <div>
                 <h3>Kantor Pusat Jakarta</h3>
-                <p className="muted">Jl. Kemang Raya No. 10A, Mampang Prapatan, Jakarta Selatan, 12730</p>
+                <p className="muted">{addressText}</p>
               </div>
             </article>
 
@@ -163,8 +186,8 @@ function KontakKamiPage() {
               <span className="contact-icon" />
               <div>
                 <h3>Atelier Digital</h3>
-                <p className="muted"><a href="mailto:inquire@trimitra.id">inquire@trimitra.id</a></p>
-                <p className="muted"><a href="mailto:press@trimitra.id">press@trimitra.id</a></p>
+                <p className="muted"><a href={`mailto:${primaryEmail}`}>{primaryEmail}</a></p>
+                <p className="muted"><a href={`mailto:${secondaryEmail}`}>{secondaryEmail}</a></p>
               </div>
             </article>
 
@@ -172,8 +195,8 @@ function KontakKamiPage() {
               <span className="contact-icon" />
               <div>
                 <h3>Hubungi Langsung</h3>
-                <p className="muted"><a href="tel:+62215550192">+62 21 555 0192</a></p>
-                <p className="kicker"><a href="https://wa.me/62215550192" target="_blank" rel="noreferrer">Obrolan WhatsApp</a></p>
+                <p className="muted"><a href={`tel:${primaryPhone.replace(/\s+/g, '')}`}>{primaryPhone}</a></p>
+                <p className="kicker"><a href={whatsappUrl} target="_blank" rel="noreferrer">Obrolan WhatsApp</a></p>
               </div>
             </article>
 

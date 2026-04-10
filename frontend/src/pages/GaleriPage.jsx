@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { SectionReveal, StaggerGroup, StaggerItem } from '../components/animation/Reveal'
+import { motion, useReducedMotion } from 'framer-motion'
+import { SectionReveal } from '../components/animation/Reveal'
 import LazyImage from '../components/ui/LazyImage'
 import {
   getWordPressGalleryFromPageBySlugs,
@@ -21,6 +22,33 @@ const queryToFilter = Object.fromEntries(
 
 const ITEMS_PER_PAGE = 18
 const MAX_PAGINATION_NUMBERS = 10
+
+const galleryStaggerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.065,
+      delayChildren: 0.04,
+    },
+  },
+}
+
+const galleryCardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+    scale: 0.985,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.62,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+}
 
 function buildPageItems(currentPage, totalPages) {
   if (totalPages <= MAX_PAGINATION_NUMBERS) {
@@ -64,18 +92,59 @@ function buildPageItems(currentPage, totalPages) {
 }
 
 const fallbackGallery = [
-  { type: 'square', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-1/900/900', alt: 'Galeri 1' },
-  { type: 'tall', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-2/900/1200', alt: 'Galeri 2' },
-  { type: 'square', category: 'Billboard', src: 'https://picsum.photos/seed/gallery-3/900/900', alt: 'Galeri 3' },
-  { type: 'square', category: 'Event', src: 'https://picsum.photos/seed/gallery-4/900/900', alt: 'Galeri 4' },
-  { type: 'square', category: 'Event', src: 'https://picsum.photos/seed/gallery-5/900/900', alt: 'Galeri 5' },
-  { type: 'tall', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-6/900/1200', alt: 'Galeri 6' },
-  { type: 'tall', category: 'Billboard', src: 'https://picsum.photos/seed/gallery-7/900/1200', alt: 'Galeri 7' },
-  { type: 'wide', category: 'Booth Pameran', src: 'https://picsum.photos/seed/gallery-8/1400/820', alt: 'Galeri 8' },
+  {
+    type: 'square',
+    category: 'Booth Pameran',
+    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80',
+    alt: 'Booth pameran brand dengan struktur modern dan pencahayaan fokus.',
+  },
+  {
+    type: 'tall',
+    category: 'Booth Pameran',
+    src: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=900&q=80',
+    alt: 'Detail area booth exhibition dengan alur pengunjung yang terarah.',
+  },
+  {
+    type: 'square',
+    category: 'Billboard',
+    src: 'https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=900&q=80',
+    alt: 'Media billboard outdoor di koridor jalan utama perkotaan.',
+  },
+  {
+    type: 'square',
+    category: 'Event',
+    src: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80',
+    alt: 'Suasana event korporat dengan panggung dan audiens aktif.',
+  },
+  {
+    type: 'square',
+    category: 'Event',
+    src: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
+    alt: 'Momen event activation dengan tata cahaya dan crowd engagement.',
+  },
+  {
+    type: 'tall',
+    category: 'Booth Pameran',
+    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80',
+    alt: 'Elevasi vertikal booth pameran untuk meningkatkan visibilitas brand.',
+  },
+  {
+    type: 'tall',
+    category: 'Billboard',
+    src: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?auto=format&fit=crop&w=900&q=80',
+    alt: 'Penempatan billboard di titik traffic padat dengan exposure tinggi.',
+  },
+  {
+    type: 'wide',
+    category: 'Booth Pameran',
+    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=80',
+    alt: 'Tampilan lebar area booth exhibition untuk kebutuhan showcase brand.',
+  },
 ]
 
 function GaleriPage() {
   const navigate = useNavigate()
+  const prefersReducedMotion = useReducedMotion()
   const [searchParams, setSearchParams] = useSearchParams()
   const [activeIndex, setActiveIndex] = useState(null)
   const [galleryItems, setGalleryItems] = useState(fallbackGallery)
@@ -259,10 +328,19 @@ function GaleriPage() {
             ))}
           </div>
         ) : (
-          <StaggerGroup className="container gallery-grid" once={true} amount={0.08}>
+          <motion.div
+            className="container gallery-grid"
+            variants={galleryStaggerVariants}
+            initial={prefersReducedMotion ? false : 'hidden'}
+            whileInView={prefersReducedMotion ? undefined : 'show'}
+            viewport={{ once: true, amount: 0.08 }}
+          >
             {pagedGallery.map((item, idx) => (
-              <StaggerItem key={item.id || item.src} className={`gallery-grid-item ${item.type}`}>
-                <article className={`gallery-card card ${item.type}`}>
+              <motion.article
+                key={item.id || item.src}
+                className={`gallery-grid-item gallery-card card ${item.type}`}
+                variants={galleryCardVariants}
+              >
                   <button
                     type="button"
                     className="gallery-lightbox-trigger"
@@ -275,10 +353,9 @@ function GaleriPage() {
                       className="gallery-image"
                     />
                   </button>
-                </article>
-              </StaggerItem>
+              </motion.article>
             ))}
-          </StaggerGroup>
+          </motion.div>
         )}
 
         {totalPages > 1 && (

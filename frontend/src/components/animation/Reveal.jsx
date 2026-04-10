@@ -3,17 +3,19 @@ import { motion, useReducedMotion } from 'framer-motion'
 const sectionVariants = {
   hidden: {
     opacity: 0,
-    y: 72,
-    scale: 0.96,
-    filter: 'blur(12px)',
+    y: 52,
+    scale: 0.985,
+    clipPath: 'inset(0 0 18% 0)',
+    filter: 'blur(8px)',
   },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
+    clipPath: 'inset(0 0 0% 0)',
     filter: 'blur(0px)',
     transition: {
-      duration: 1.05,
+      duration: 0.9,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -23,8 +25,8 @@ const groupVariants = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.14,
-      delayChildren: 0.08,
+      staggerChildren: 0.09,
+      delayChildren: 0.06,
     },
   },
 }
@@ -32,9 +34,9 @@ const groupVariants = {
 const itemVariants = {
   hidden: {
     opacity: 0,
-    y: 36,
-    scale: 0.97,
-    filter: 'blur(8px)',
+    y: 24,
+    scale: 0.985,
+    filter: 'blur(6px)',
   },
   show: {
     opacity: 1,
@@ -42,19 +44,20 @@ const itemVariants = {
     scale: 1,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.9,
+      duration: 0.72,
       ease: [0.22, 1, 0.36, 1],
     },
   },
 }
 
-export function SectionReveal({ children, className = '', style }) {
+export function SectionReveal({ children, className = '', style, ...rest }) {
   const prefersReducedMotion = useReducedMotion()
 
   return (
     <motion.section
       className={className}
       style={style}
+      {...rest}
       variants={sectionVariants}
       initial={prefersReducedMotion ? false : 'hidden'}
       whileInView={prefersReducedMotion ? undefined : 'show'}

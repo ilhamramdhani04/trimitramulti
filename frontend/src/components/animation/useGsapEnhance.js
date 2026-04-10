@@ -20,6 +20,7 @@ export function useGsapEnhance() {
       gsap.registerPlugin(ScrollTrigger)
 
       const parallaxTargets = gsap.utils.toArray('[data-gsap-parallax]')
+      const layeredParallaxTargets = gsap.utils.toArray('[data-gsap-parallax-layer]')
       const floatTargets = gsap.utils.toArray('[data-gsap-float]')
 
       const tweens = []
@@ -38,6 +39,39 @@ export function useGsapEnhance() {
                 start: 'top bottom',
                 end: 'bottom top',
                 scrub: 1,
+              },
+            },
+          ),
+        )
+      })
+
+      const depthMap = {
+        background: { fromY: -8, toY: 12, fromScale: 1.08, toScale: 1 },
+        middle: { fromY: -4, toY: 6, fromScale: 1.03, toScale: 1 },
+        foreground: { fromY: -2, toY: 4, fromScale: 1.01, toScale: 1 },
+        content: { fromY: 2, toY: -8, fromScale: 1, toScale: 1 },
+      }
+
+      layeredParallaxTargets.forEach((target) => {
+        const layerName = target.getAttribute('data-gsap-parallax-layer') || 'middle'
+        const depth = depthMap[layerName] || depthMap.middle
+
+        tweens.push(
+          gsap.fromTo(
+            target,
+            {
+              yPercent: depth.fromY,
+              scale: depth.fromScale,
+            },
+            {
+              yPercent: depth.toY,
+              scale: depth.toScale,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: target,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 0.8,
               },
             },
           ),

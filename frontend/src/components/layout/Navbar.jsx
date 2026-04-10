@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { navLinks } from '../../data/navLinks'
 import { prefetchRoute } from '../../app/routePrefetch'
+import { useNavbarScrollState } from '../animation/useNavbarScrollState'
 
 function Navbar() {
+  const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const isScrolled = useNavbarScrollState({
+    threshold: 80,
+    heroSelector: '[data-nav-hero]',
+    routeKey: `${location.pathname}${location.search}`,
+  })
   const headerRef = useRef(null)
 
   const closeMenu = () => setIsMenuOpen(false)
@@ -66,8 +73,12 @@ function Navbar() {
   }, [])
 
   return (
-    <header className="site-header" ref={headerRef}>
-      <div className="container nav-wrap">
+    <header
+      className={`site-header nav-shell ${isScrolled ? 'nav-shell--glass is-scrolled' : 'nav-shell--transparent'} ${isMenuOpen ? 'nav-shell--menu-open' : ''}`}
+      ref={headerRef}
+      data-nav-state={isScrolled ? 'glass' : 'transparent'}
+    >
+      <div className="nav-wrap nav-wrap-shell">
         <NavLink
           className="brand"
           to="/"
@@ -115,6 +126,7 @@ function Navbar() {
             onMouseEnter={() => prefetchRoute('/kontak-kami')}
             onFocus={() => prefetchRoute('/kontak-kami')}
             data-prefetch-route="/kontak-kami"
+            data-magnetic
           >
             <span className="cta-label">Konsultasi Gratis</span>
             <span className="cta-icon" aria-hidden="true">
@@ -126,7 +138,7 @@ function Navbar() {
           </NavLink>
 
           <button
-            className="mobile-menu"
+            className={`mobile-menu mobile-nav-toggle ${isMenuOpen ? 'is-open' : ''}`}
             aria-label="Menu navigasi"
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -138,7 +150,7 @@ function Navbar() {
         </div>
       </div>
 
-      <div className={`mobile-panel ${isMenuOpen ? 'open' : ''}`}>
+      <div className={`mobile-panel mobile-nav-panel ${isMenuOpen ? 'open is-open' : ''}`}>
         <div className="container mobile-panel-inner">
           {navLinks.map((item) => (
             <NavLink

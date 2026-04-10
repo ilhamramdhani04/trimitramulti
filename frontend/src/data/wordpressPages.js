@@ -85,6 +85,75 @@ function parseImagesFromRenderedHtml(html) {
   return []
 }
 
+function dedupe(values = []) {
+  return Array.from(new Set(values.filter(Boolean)))
+}
+
+function firstTextMatch(candidates, matcher) {
+  for (const value of candidates) {
+    if (matcher(value)) return value
+  }
+  return ''
+}
+
+export function extractContactInfoFromHtml(html) {
+  const fallback = {
+    address: '',
+    emails: [],
+    phones: [],
+    whatsapp: '',
+  }
+
+  if (!html || !hasWindow) return fallback
+
+  const parser = new window.DOMParser()
+  const doc = parser.parseFromString(html, 'text/html')
+
+  const links = Array.from(doc.querySelectorAll('a[href]'))
+  const textBlocks = Array.from(doc.querySelectorAll('p, li, address, div'))
+    .map((node) => decodeHtml(node.textContent || '').replace(/\s+/g, ' ').trim())
+    .filter((text) => text.length > 10)
+
+  const emails = dedupe(
+    links
+      .map((link) => link.getAttribute('href') || '')
+      .filter((href) => href.startsWith('mailto:'))
+      .map((href) => href.replace(/^mailto:/i, '').trim()),
+  )
+
+  const phones = dedupe(
+    links
+      .map((link) => ({ href: link.getAttribute('href') || '', text: decodeHtml(link.textContent || '').trim() }))
+      .filter((item) => item.href.startsWith('tel:'))
+      .map((item) => item.text || item.href.replace(/^tel:/i, '').trim()),
+  )
+
+  const whatsapp =
+    links
+      .map((link) => link.getAttribute('href') || '')
+      .find((href) => href.includes('wa.me/') || href.includes('api.whatsapp.com/')) ||
+    ''
+
+  const address = firstTextMatch(textBlocks, (value) => {
+    const source = value.toLowerCase()
+    return (
+      source.includes('jl.') ||
+      source.includes('jalan') ||
+      source.includes('kota') ||
+      source.includes('jakarta') ||
+      source.includes('depok') ||
+      source.includes('alamat')
+    )
+  })
+
+  return {
+    address,
+    emails,
+    phones,
+    whatsapp,
+  }
+}
+
 async function fetchWp(endpoint, params = {}) {
   const query = new URLSearchParams(params).toString()
   const url = `${WP_SITE_URL}/wp-json/wp/v2/${endpoint}${query ? `?${query}` : ''}`
@@ -138,7 +207,7 @@ export async function getWordPressPageBySlugs(slugs = []) {
       slug,
       status: 'publish',
       per_page: '1',
-      _fields: 'id,slug,title.rendered,excerpt.rendered,content.rendered,featured_media',
+      _fields: 'id,slug,title.rendered,excerpt.rendered,content.rendered,featured_media,acf,meta',
     })
 
     const pages = Array.isArray(result.data) ? result.data : []
@@ -160,6 +229,8 @@ export async function getWordPressPageBySlugs(slugs = []) {
       excerpt,
       contentHtml,
       image,
+      acf: page?.acf && typeof page.acf === 'object' ? page.acf : {},
+      meta: page?.meta && typeof page.meta === 'object' ? page.meta : {},
     }
   }
 

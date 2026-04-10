@@ -11,6 +11,8 @@ import {
   prefetchBlogPostBySlugFromWordPress,
 } from '../data/wordpressBlog'
 
+const LIVE_DETAIL_REFRESH_INTERVAL_MS = 20000
+
 function BeritaDetailPage() {
   const { slug } = useParams()
   const [isLoading, setIsLoading] = useState(true)
@@ -29,14 +31,15 @@ function BeritaDetailPage() {
 
   useEffect(() => {
     let cancelled = false
+    let refreshInProgress = false
 
-    async function loadFromWordPress() {
+    async function loadFromWordPress({ forceFresh = false, initialLoad = false } = {}) {
       if (!isWordPressConfigured()) {
         const localPost = getBlogPostBySlug(slug)
         if (cancelled) return
         setPost(localPost)
         if (!localPost) {
-          setIsLoading(false)
+          if (initialLoad) setIsLoading(false)
           return
         }
 
@@ -47,20 +50,33 @@ function BeritaDetailPage() {
           (item) => item.slug !== localPost.slug && item.category !== localPost.category,
         )
         setRelatedPosts([...sameCategoryPosts, ...fallbackPosts].slice(0, 3))
-        setIsLoading(false)
+        if (initialLoad) setIsLoading(false)
         return
       }
 
+      if (refreshInProgress) return
+      refreshInProgress = true
+
       try {
         const [wpPost, wpPosts] = await Promise.all([
-          getBlogPostBySlugFromWordPress(slug),
-          getBlogPostsFromWordPress({ perPage: 20, allPages: false }),
+          getBlogPostBySlugFromWordPress(slug, {
+            skipCache: forceFresh,
+            staleWhileRevalidate: !forceFresh,
+            ttlMs: 60 * 1000,
+          }),
+          getBlogPostsFromWordPress({
+            perPage: 20,
+            allPages: false,
+            skipCache: forceFresh,
+            staleWhileRevalidate: !forceFresh,
+            ttlMs: 60 * 1000,
+          }),
         ])
 
         if (cancelled) return
         if (!wpPost) {
           setPost(getBlogPostBySlug(slug))
-          setIsLoading(false)
+          if (initialLoad) setIsLoading(false)
           return
         }
 
@@ -72,20 +88,52 @@ function BeritaDetailPage() {
           (item) => item.slug !== wpPost.slug && item.category !== wpPost.category,
         )
         setRelatedPosts([...sameCategory, ...fallback].slice(0, 3))
-        setIsLoading(false)
-      } catch {
+        if (initialLoad) setIsLoading(false)
+      } catch (error) {
         if (!cancelled) {
+          console.warn('[BeritaDetailPage] WordPress API failed, using local fallback:', error?.message)
           const localPost = getBlogPostBySlug(slug)
           setPost(localPost)
-          setIsLoading(false)
+          
+          if (localPost) {
+            const sameCategoryPosts = blogPosts.filter(
+              (item) => item.slug !== localPost.slug && item.category === localPost.category,
+            )
+            const fallbackPosts = blogPosts.filter(
+              (item) => item.slug !== localPost.slug && item.category !== localPost.category,
+            )
+            setRelatedPosts([...sameCategoryPosts, ...fallbackPosts].slice(0, 3))
+          }
+          if (initialLoad) setIsLoading(false)
         }
+      } finally {
+        refreshInProgress = false
       }
     }
 
-    loadFromWordPress()
+    loadFromWordPress({ initialLoad: true, forceFresh: true })
+
+    const onFocus = () => loadFromWordPress({ forceFresh: true })
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        loadFromWordPress({ forceFresh: true })
+      }
+    }
+
+    const intervalId = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        loadFromWordPress({ forceFresh: true })
+      }
+    }, LIVE_DETAIL_REFRESH_INTERVAL_MS)
+
+    window.addEventListener('focus', onFocus)
+    document.addEventListener('visibilitychange', onVisibilityChange)
 
     return () => {
       cancelled = true
+      window.clearInterval(intervalId)
+      window.removeEventListener('focus', onFocus)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     }
   }, [slug])
 

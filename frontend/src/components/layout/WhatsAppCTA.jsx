@@ -28,6 +28,7 @@ function WhatsAppCTA() {
       rel="noreferrer"
       aria-label="Konsultasi via WhatsApp"
     >
+      <span className="wa-float-pulse" aria-hidden="true" />
       <span className="wa-float-icon" aria-hidden="true">
         <WhatsAppIcon />
       </span>

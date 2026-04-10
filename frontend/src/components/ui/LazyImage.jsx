@@ -12,22 +12,18 @@ function LazyImage({
   onLoad,
   ...rest
 }) {
-  const [inView, setInView] = useState(false)
-  const [loaded, setLoaded] = useState(false)
+  const [inView, setInView] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return !('IntersectionObserver' in window)
+  })
+  const [loadedSrc, setLoadedSrc] = useState('')
   const hostRef = useRef(null)
 
   useEffect(() => {
-    setLoaded(false)
-  }, [src])
+    if (inView) return undefined
 
-  useEffect(() => {
     const node = hostRef.current
-    if (!node) return
-
-    if (!('IntersectionObserver' in window)) {
-      setInView(true)
-      return
-    }
+    if (!node) return undefined
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -43,20 +39,20 @@ function LazyImage({
 
     observer.observe(node)
     return () => observer.disconnect()
-  }, [])
+  }, [inView])
 
   return (
     <div ref={hostRef} className={`lazy-image-wrap ${wrapperClassName}`.trim()}>
       <img
         src={inView ? src : ONE_PIXEL_GIF}
         alt={alt}
-        className={`lazy-image ${loaded ? 'is-loaded' : ''} ${className || ''}`.trim()}
+        className={`lazy-image ${loadedSrc === src ? 'is-loaded' : ''} ${className || ''}`.trim()}
         style={style}
         loading="lazy"
         decoding="async"
         onLoad={(event) => {
           if (!inView) return
-          setLoaded(true)
+          setLoadedSrc(src)
           if (onLoad) onLoad(event)
         }}
         {...rest}

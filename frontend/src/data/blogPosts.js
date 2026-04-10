@@ -5,10 +5,10 @@ export const blogPosts = [
     title: 'Migrating to Linear 101',
     excerpt:
       'Linear helps streamline software projects, sprints, tasks, and bug tracking. Here is how to get started.',
-    image: 'https://picsum.photos/seed/blog-a/900/600',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80',
     author: 'Jonathan Wills',
     date: '19 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-a/120/120',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
     readTime: '6 min read',
     content: [
       'Linear membantu tim produk menyatukan backlog, sprint, dan quality workflow dalam satu ritme yang lebih jelas.',
@@ -22,10 +22,10 @@ export const blogPosts = [
     title: 'Building your API stack',
     excerpt:
       'The rise of RESTful APIs has been met by a rise in tools for creating, testing, and managing them.',
-    image: 'https://picsum.photos/seed/blog-b/900/600',
+    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80',
     author: 'Lana Steiner',
     date: '18 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-b/120/120',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
     readTime: '8 min read',
     content: [
       'Menyusun API stack modern tidak hanya soal framework. Dokumentasi, observability, dan testing pipeline memiliki peran yang sama penting.',
@@ -39,10 +39,10 @@ export const blogPosts = [
     title: 'Bill Walsh leadership lessons',
     excerpt:
       'Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning dynasty?',
-    image: 'https://picsum.photos/seed/blog-c/900/600',
+    image: 'https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=900&q=80',
     author: 'Eve Wilkins',
     date: '18 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-c/120/120',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
     readTime: '5 min read',
     content: [
       'Walsh menekankan standar eksekusi kecil yang konsisten. Bukan motivasi besar sesaat, tetapi disiplin harian.',
@@ -56,10 +56,10 @@ export const blogPosts = [
     title: 'PM mental models',
     excerpt:
       'Mental models are simple expressions of complex processes or relationships for practical decision making.',
-    image: 'https://picsum.photos/seed/blog-d/900/600',
+    image: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=900&q=80',
     author: 'Eve Wilkins',
     date: '18 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-c/120/120',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
     readTime: '7 min read',
     content: [
       'Mental model membantu product manager membaca kompleksitas dengan kerangka yang lebih sederhana.',
@@ -73,10 +73,10 @@ export const blogPosts = [
     title: 'What is Wireframing?',
     excerpt:
       'Introduction to Wireframing and its Principles. Learn from the best in the industry.',
-    image: 'https://picsum.photos/seed/blog-e/900/600',
+    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
     author: 'Lana Steiner',
     date: '18 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-b/120/120',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
     readTime: '4 min read',
     content: [
       'Wireframe merupakan tahap penyelarasan ide sebelum detail visual dieksekusi lebih jauh.',
@@ -90,10 +90,10 @@ export const blogPosts = [
     title: 'How collaboration makes us better designers',
     excerpt:
       'Collaboration can make our teams stronger, and our individual designs better.',
-    image: 'https://picsum.photos/seed/blog-f/900/600',
+    image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?auto=format&fit=crop&w=900&q=80',
     author: 'Jonathan Wills',
     date: '19 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-a/120/120',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
     readTime: '6 min read',
     content: [
       'Kolaborasi lintas fungsi memungkinkan perspektif desain yang lebih utuh sejak fase konsep.',
@@ -107,10 +107,10 @@ export const blogPosts = [
     title: 'Design systems in distributed teams',
     excerpt:
       'A practical framework for scaling consistency while teams and products grow quickly.',
-    image: 'https://picsum.photos/seed/blog-g/900/600',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80',
     author: 'Eve Wilkins',
     date: '20 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-c/120/120',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
     readTime: '9 min read',
     content: [
       'Design system yang baik adalah produk internal yang terus dirawat, bukan dokumen statis.',
@@ -124,10 +124,10 @@ export const blogPosts = [
     title: 'Our top 10 Javascript frameworks to use',
     excerpt:
       'JavaScript frameworks make development easy with extensive features and functionalities.',
-    image: 'https://picsum.photos/seed/blog-h/900/600',
+    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80',
     author: 'Lana Steiner',
     date: '18 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-b/120/120',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
     readTime: '10 min read',
     content: [
       'Memilih framework bukan soal tren, tetapi soal kecocokan dengan kebutuhan tim dan horizon produk.',
@@ -141,10 +141,10 @@ export const blogPosts = [
     title: 'Podcast: Creating a better CX Community',
     excerpt:
       'Starting a community does not need to be complicated, but how do you get started?',
-    image: 'https://picsum.photos/seed/blog-i/900/600',
+    image: 'https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=900&q=80',
     author: 'Jonathan Wills',
     date: '19 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-a/120/120',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
     readTime: '5 min read',
     content: [
       'Komunitas CX yang sehat dibangun dari ritme konten yang konsisten dan ruang diskusi yang aman.',
@@ -158,10 +158,10 @@ export const blogPosts = [
     title: 'Scaling UX ops with lean processes',
     excerpt:
       'How design operations can unlock better velocity and clearer execution.',
-    image: 'https://picsum.photos/seed/blog-j/900/600',
+    image: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=900&q=80',
     author: 'Eve Wilkins',
     date: '21 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-c/120/120',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
     readTime: '7 min read',
     content: [
       'UX Ops berfungsi menjaga kualitas proses saat tim desain bertambah besar.',
@@ -175,10 +175,10 @@ export const blogPosts = [
     title: 'Roadmapping products with confidence',
     excerpt:
       'A lightweight strategy to align teams around roadmap priorities and outcomes.',
-    image: 'https://picsum.photos/seed/blog-k/900/600',
+    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
     author: 'Lana Steiner',
     date: '22 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-b/120/120',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
     readTime: '8 min read',
     content: [
       'Roadmap efektif menyeimbangkan visi jangka panjang dan kebutuhan eksekusi jangka pendek.',
@@ -192,10 +192,10 @@ export const blogPosts = [
     title: 'Remote design reviews that work',
     excerpt:
       'A practical playbook for critique rituals that improve quality in async teams.',
-    image: 'https://picsum.photos/seed/blog-l/900/600',
+    image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?auto=format&fit=crop&w=900&q=80',
     author: 'Jonathan Wills',
     date: '22 Jan 2022',
-    avatar: 'https://picsum.photos/seed/author-a/120/120',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
     readTime: '6 min read',
     content: [
       'Review remote yang efektif dimulai dari konteks masalah yang jelas sebelum membahas solusi.',

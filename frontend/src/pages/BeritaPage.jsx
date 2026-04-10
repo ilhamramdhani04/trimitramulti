@@ -13,6 +13,33 @@ import { prefetchRoute } from '../app/routePrefetch'
 const postCategories = ['Semua', 'Berita', 'Artikel']
 const ITEMS_PER_PAGE = 9
 const MAX_PAGINATION_NUMBERS = 10
+const LIVE_REFRESH_INTERVAL_MS = 20000
+const WP_NEWS_SNAPSHOT_KEY = 'berita:wp-posts:v1'
+
+function readWordPressPostsSnapshot() {
+  if (typeof window === 'undefined') return null
+  try {
+    const raw = window.sessionStorage.getItem(WP_NEWS_SNAPSHOT_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed
+    }
+  } catch {
+    // Ignore parsing/storage errors.
+  }
+  return null
+}
+
+function writeWordPressPostsSnapshot(posts) {
+  if (typeof window === 'undefined') return
+  if (!Array.isArray(posts) || posts.length === 0) return
+  try {
+    window.sessionStorage.setItem(WP_NEWS_SNAPSHOT_KEY, JSON.stringify(posts))
+  } catch {
+    // Ignore quota/storage errors.
+  }
+}
 
 function normalizeCategoryForFilter(category) {
   const source = (category || '').toLowerCase()
@@ -64,13 +91,24 @@ function buildPageItems(currentPage, totalPages) {
 }
 
 function BeritaPage() {
+  const initialDataRef = useRef(null)
+  if (!initialDataRef.current) {
+    const snapshot = readWordPressPostsSnapshot()
+    initialDataRef.current = {
+      posts: snapshot || blogPosts,
+      hasWordPressData: Boolean(snapshot && snapshot.length > 0),
+    }
+  }
+
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
   const [activeCategory, setActiveCategory] = useState('Semua')
-  const [posts, setPosts] = useState(blogPosts)
-  const [isLoadingWp, setIsLoadingWp] = useState(isWordPressConfigured())
+  const [posts, setPosts] = useState(initialDataRef.current.posts)
+  const [isLoadingWp, setIsLoadingWp] = useState(() => isWordPressConfigured())
   const prefetchedImagesRef = useRef(new Set())
   const prefetchedDetailRef = useRef(new Set())
+  const refreshPromiseRef = useRef(null)
+  const hasSyncedWordPressRef = useRef(initialDataRef.current.hasWordPressData)
 
   useEffect(() => {
     const rawPage = Number(searchParams.get('page') ?? '1')
@@ -81,25 +119,82 @@ function BeritaPage() {
   useEffect(() => {
     let cancelled = false
 
-    async function loadFromWordPress() {
-      if (!isWordPressConfigured()) return
-      try {
-        const wpPosts = await getBlogPostsFromWordPress()
-        if (!cancelled && wpPosts.length > 0) {
-          setPosts(wpPosts)
+    const applyFetchedPosts = (wpPosts) => {
+      if (Array.isArray(wpPosts) && wpPosts.length > 0) {
+        setPosts(wpPosts)
+        hasSyncedWordPressRef.current = true
+        writeWordPressPostsSnapshot(wpPosts)
+        return
+      }
+
+      if (!hasSyncedWordPressRef.current) {
+        setPosts(blogPosts)
+      }
+    }
+
+    async function refreshFromWordPress({ forceFresh = false, initialLoad = false } = {}) {
+      if (!isWordPressConfigured()) {
+        if (!cancelled && initialLoad) {
+          setIsLoadingWp(false)
         }
-      } catch {
-        // Keep local fallback posts when WordPress is unreachable.
-      } finally {
+        return
+      }
+
+      let request = refreshPromiseRef.current
+      if (!request) {
+        request = getBlogPostsFromWordPress({
+          skipCache: forceFresh,
+          staleWhileRevalidate: !forceFresh,
+          ttlMs: 60 * 1000,
+        })
+        refreshPromiseRef.current = request
+      }
+
+      try {
+        const wpPosts = await request
         if (!cancelled) {
+          applyFetchedPosts(wpPosts)
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.warn('[BeritaPage] WordPress API error, keeping last known posts:', error?.message)
+          if (!hasSyncedWordPressRef.current) {
+            setPosts(blogPosts)
+          }
+        }
+      } finally {
+        if (refreshPromiseRef.current === request) {
+          refreshPromiseRef.current = null
+        }
+        if (!cancelled && initialLoad) {
           setIsLoadingWp(false)
         }
       }
     }
 
-    loadFromWordPress()
+    refreshFromWordPress({ initialLoad: true, forceFresh: true })
+
+    const onFocus = () => refreshFromWordPress({ forceFresh: true })
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshFromWordPress({ forceFresh: true })
+      }
+    }
+
+    const intervalId = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        refreshFromWordPress({ forceFresh: true })
+      }
+    }, LIVE_REFRESH_INTERVAL_MS)
+
+    window.addEventListener('focus', onFocus)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+
     return () => {
       cancelled = true
+      window.clearInterval(intervalId)
+      window.removeEventListener('focus', onFocus)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     }
   }, [])
 
@@ -237,7 +332,7 @@ function BeritaPage() {
           })}
         </div>
 
-        {isLoadingWp ? (
+        {isLoadingWp && posts.length === 0 ? (
           <div className="blog-post-grid" aria-label="Memuat daftar berita">
             {Array.from({ length: ITEMS_PER_PAGE }, (_, index) => (
               <article key={`blog-skeleton-${index}`} className="blog-card blog-skeleton-card" aria-hidden="true">

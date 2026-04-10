@@ -99,6 +99,50 @@ function Footer() {
 
   return (
     <footer className="site-footer" ref={footerRef}>
+      <div className="site-footer-wave" aria-hidden="true">
+        <svg viewBox="0 0 1440 220" preserveAspectRatio="none" role="presentation">
+          <defs>
+            <linearGradient id="footerWaveBase" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="var(--cta-footer-wave-base-start)" stopOpacity="0.12" />
+              <stop offset="38%" stopColor="var(--cta-footer-wave-base-mid)" stopOpacity="0.28" />
+              <stop offset="72%" stopColor="var(--cta-footer-wave-base-mid)" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="var(--cta-footer-wave-base-end)" stopOpacity="0.1" />
+            </linearGradient>
+            <linearGradient id="footerWaveSoft" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="var(--cta-footer-wave-soft-start)" stopOpacity="0.08" />
+              <stop offset="48%" stopColor="var(--cta-footer-wave-soft-mid)" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="var(--cta-footer-wave-soft-end)" stopOpacity="0.07" />
+            </linearGradient>
+            <linearGradient id="footerWaveLine" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="var(--cta-footer-wave-line)" stopOpacity="0" />
+              <stop offset="50%" stopColor="var(--cta-footer-wave-line)" stopOpacity="0.34" />
+              <stop offset="100%" stopColor="var(--cta-footer-wave-line)" stopOpacity="0" />
+            </linearGradient>
+            <filter id="footerWaveBlur" x="-10%" y="-60%" width="120%" height="240%">
+              <feGaussianBlur stdDeviation="9" />
+            </filter>
+          </defs>
+          <path
+            className="site-footer-wave-mass"
+            d="M0,108 C172,154 356,162 542,146 C746,128 892,82 1070,88 C1222,94 1340,132 1440,102 L1440,220 L0,220 Z"
+            fill="url(#footerWaveBase)"
+          />
+          <path
+            className="site-footer-wave-soft"
+            d="M0,124 C164,92 330,84 508,102 C714,124 902,162 1096,162 C1248,162 1360,142 1440,122 L1440,216 L0,216 Z"
+            fill="url(#footerWaveSoft)"
+            filter="url(#footerWaveBlur)"
+          />
+          <path
+            className="site-footer-wave-line"
+            d="M0,118 C178,160 350,166 536,148 C730,130 888,92 1062,96 C1212,98 1328,126 1440,142"
+            fill="none"
+            stroke="url(#footerWaveLine)"
+            strokeWidth="1.8"
+          />
+        </svg>
+      </div>
+
       <div className="container footer-grid">
         <section className="footer-brand">
           <div className="footer-brand-head">
