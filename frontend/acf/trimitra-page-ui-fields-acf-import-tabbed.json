@@ -1,0 +1,721 @@
+[
+  {
+    "key": "group_trimitra_page_ui_fields_tabbed",
+    "title": "Trimitra Page UI Fields (Tabbed)",
+    "fields": [
+      {
+        "key": "field_tab_general",
+        "label": "General",
+        "name": "",
+        "aria-label": "",
+        "type": "tab",
+        "instructions": "",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "placement": "top",
+        "endpoint": 0,
+        "selected": 1
+      },
+      {
+        "key": "field_trimitra_page_kicker_tabbed",
+        "label": "Page Kicker",
+        "name": "page_kicker",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Label kecil di atas judul halaman/section.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_hero_kicker_tabbed",
+        "label": "Hero Kicker",
+        "name": "hero_kicker",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Alias kicker hero (fallback untuk home).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_about_kicker_tabbed",
+        "label": "About Kicker",
+        "name": "about_kicker",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Alias kicker untuk halaman Tentang Kami.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_services_kicker_tabbed",
+        "label": "Services Kicker",
+        "name": "services_kicker",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Alias kicker untuk halaman Produk/Jasa.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+
+      {
+        "key": "field_tab_home",
+        "label": "Home",
+        "name": "",
+        "aria-label": "",
+        "type": "tab",
+        "instructions": "Kontrol konten khusus Home.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "placement": "top",
+        "endpoint": 0,
+        "selected": 0
+      },
+      {
+        "key": "field_trimitra_home_kicker_tabbed",
+        "label": "Home Kicker",
+        "name": "home_kicker",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Kicker utama halaman home (opsional).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_journal_kicker_tabbed",
+        "label": "Journal Kicker",
+        "name": "journal_kicker",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Kicker section jurnal di Home.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "33",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_journal_title_tabbed",
+        "label": "Journal Title",
+        "name": "journal_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Judul section jurnal di Home.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "33",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_journal_button_label_tabbed",
+        "label": "Journal Button Label",
+        "name": "journal_button_label",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Label tombol section jurnal.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "34",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_portfolio_kicker_tabbed",
+        "label": "Portfolio Kicker",
+        "name": "portfolio_kicker",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Kicker section portofolio di Home.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_portfolio_title_tabbed",
+        "label": "Portfolio Title",
+        "name": "portfolio_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Judul section portofolio di Home.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+
+      {
+        "key": "field_tab_services",
+        "label": "Produk & Jasa",
+        "name": "",
+        "aria-label": "",
+        "type": "tab",
+        "instructions": "Kontrol hero halaman Produk & Jasa.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "placement": "top",
+        "endpoint": 0,
+        "selected": 0
+      },
+      {
+        "key": "field_trimitra_hero_title_tabbed",
+        "label": "Hero Title",
+        "name": "hero_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Judul hero (dipakai terutama di halaman Layanan).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_services_title_tabbed",
+        "label": "Services Title",
+        "name": "services_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Alias judul untuk halaman Produk/Jasa.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_hero_copy_tabbed",
+        "label": "Hero Copy",
+        "name": "hero_copy",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "Deskripsi hero utama.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "rows": "3",
+        "placeholder": "",
+        "new_lines": "br"
+      },
+      {
+        "key": "field_trimitra_services_copy_tabbed",
+        "label": "Services Copy",
+        "name": "services_copy",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "Alias deskripsi untuk halaman Produk/Jasa.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "rows": "3",
+        "placeholder": "",
+        "new_lines": "br"
+      },
+
+      {
+        "key": "field_tab_cta",
+        "label": "CTA",
+        "name": "",
+        "aria-label": "",
+        "type": "tab",
+        "instructions": "Kontrol CTA umum dan override per halaman.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "placement": "top",
+        "endpoint": 0,
+        "selected": 0
+      },
+      {
+        "key": "field_trimitra_cta_title_tabbed",
+        "label": "CTA Title (Global)",
+        "name": "cta_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Judul CTA umum lintas halaman.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_cta_copy_tabbed",
+        "label": "CTA Copy (Global)",
+        "name": "cta_copy",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "Deskripsi CTA umum lintas halaman.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "rows": "3",
+        "placeholder": "",
+        "new_lines": "br"
+      },
+      {
+        "key": "field_trimitra_home_cta_title_tabbed",
+        "label": "Home CTA Title",
+        "name": "home_cta_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Override judul CTA khusus Home.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_home_cta_copy_tabbed",
+        "label": "Home CTA Copy",
+        "name": "home_cta_copy",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "Override deskripsi CTA khusus Home.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "rows": "3",
+        "placeholder": "",
+        "new_lines": "br"
+      },
+      {
+        "key": "field_trimitra_about_cta_title_tabbed",
+        "label": "About CTA Title",
+        "name": "about_cta_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Override judul CTA khusus Tentang Kami.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_about_cta_copy_tabbed",
+        "label": "About CTA Copy",
+        "name": "about_cta_copy",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "Override deskripsi CTA khusus Tentang Kami.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "rows": "3",
+        "placeholder": "",
+        "new_lines": "br"
+      },
+      {
+        "key": "field_trimitra_services_cta_title_tabbed",
+        "label": "Services CTA Title",
+        "name": "services_cta_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Override judul CTA khusus Produk/Jasa.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_services_cta_copy_tabbed",
+        "label": "Services CTA Copy",
+        "name": "services_cta_copy",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "Override deskripsi CTA khusus Produk/Jasa.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "rows": "3",
+        "placeholder": "",
+        "new_lines": "br"
+      },
+      {
+        "key": "field_trimitra_cta_primary_label_tabbed",
+        "label": "CTA Primary Label",
+        "name": "cta_primary_label",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Label tombol utama CTA.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_cta_primary_link_tabbed",
+        "label": "CTA Primary Link",
+        "name": "cta_primary_link",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Link tombol utama (contoh: /kontak-kami).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "/kontak-kami",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_cta_secondary_label_tabbed",
+        "label": "CTA Secondary Label",
+        "name": "cta_secondary_label",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Label tombol kedua CTA.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_cta_secondary_link_tabbed",
+        "label": "CTA Secondary Link",
+        "name": "cta_secondary_link",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Link tombol kedua (contoh: /layanan atau /galeri).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "50",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "/layanan",
+        "prepend": "",
+        "append": ""
+      },
+
+      {
+        "key": "field_tab_contact",
+        "label": "Kontak",
+        "name": "",
+        "aria-label": "",
+        "type": "tab",
+        "instructions": "Kontrol copy halaman kontak.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "placement": "top",
+        "endpoint": 0,
+        "selected": 0
+      },
+      {
+        "key": "field_trimitra_contact_title_tabbed",
+        "label": "Contact Title",
+        "name": "contact_title",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Judul halaman kontak.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "34",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_contact_title_highlight_tabbed",
+        "label": "Contact Title Highlight",
+        "name": "contact_title_highlight",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Kata yang di-highlight pada judul kontak.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "33",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_contact_submit_label_tabbed",
+        "label": "Contact Submit Label",
+        "name": "contact_submit_label",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Label tombol submit form kontak.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "33",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_trimitra_contact_subtitle_tabbed",
+        "label": "Contact Subtitle",
+        "name": "contact_subtitle",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "Subjudul/penjelasan halaman kontak.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "100",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "rows": "4",
+        "placeholder": "",
+        "new_lines": "br"
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "post_type",
+          "operator": "==",
+          "value": "page"
+        }
+      ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Versi tabbed: field UI frontend Trimitra dengan pengelompokan per area konten.",
+    "show_in_rest": 0,
+    "modified": 1712966401
+  }
+]
